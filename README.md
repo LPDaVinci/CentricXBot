@@ -6,8 +6,8 @@
 Current version : 0.0.1-alpha  
 
 ## Features:  
-
+Music and Embed features
 
 ## Installation:
 Rename config.json.default to config.json and add your Token in this file.  
-Start the Bot and Enjoy many Features.
+Start the Bot and Enjoy many Features.  
