@@ -4,7 +4,6 @@
 **If you want to support this project development check out my Twitch Channel https://twitch.tv/LPDaVinci**  
 
 Current version : 0.0.1-alpha  
-
 ## Features:  
 Music and Embed features
 
