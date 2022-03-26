@@ -11,6 +11,7 @@ using CentricXBot.Services;
 using System.Linq;
 using Serilog;
 
+//Name
 namespace CentricXBot
 {
     class CentricX
