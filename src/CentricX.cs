@@ -3,12 +3,10 @@ using Discord;
 using Discord.Net;
 using Discord.Commands;
 using Discord.WebSocket;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using CentricXBot.Services;
-using System.Linq;
 using Serilog;
 
 //Name
@@ -37,7 +35,7 @@ namespace CentricXBot
 
         public CentricX()
         {
-            // create the configuration
+            //Create the configuration
             var _builder = new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
                 .AddJsonFile(path: "config.json");
