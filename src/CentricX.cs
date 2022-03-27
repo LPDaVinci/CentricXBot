@@ -57,6 +57,9 @@ namespace CentricXBot
                 // setup logging and the ready event
                 services.GetRequiredService<LoggingService>();
 
+                //get twitch handler service
+                 services.GetRequiredService<TwitchHandler>();
+
                 // this is where we get the Token value from the configuration file, and start the bot
                 await client.LoginAsync(TokenType.Bot, _config["token"]);
                 await client.StartAsync();
@@ -94,6 +97,7 @@ namespace CentricXBot
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<LoggingService>()
+                .AddSingleton<TwitchHandler>()
                 .AddLogging(configure => configure.AddSerilog());
 
             if (!string.IsNullOrEmpty(_logLevel))
