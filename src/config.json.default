@@ -1,4 +1,7 @@
 {
-  "token": "Put your bot token here",
-  "prefix": "!"
+    "token": "Your Bot Token",
+    "prefix": ";",
+    "clientid": "Twitch-Client ID",
+    "oauth": "Twitch OAuth Token",
+    "twitchchannel": "Twitch Channel for Live Alert"
 }
