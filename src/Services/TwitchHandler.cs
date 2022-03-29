@@ -68,13 +68,13 @@ namespace CentricXBot.Services
         client.DefaultRequestHeaders.Add("Client-ID", $"{_config["clientid"]}"); 
         client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", $"{_config["oauth"]}");
        //Get Stream Info
-        HttpResponseMessage response = await client.GetAsync($"https://api.twitch.tv/helix/streams?user_login={_config["twitchchannel"]}");
+        HttpResponseMessage response = await client.GetAsync($"https://api.twitch.tv/helix/streams?user_login={_config["live-alert-streamer"]}");
         HttpContent responseContent = response.Content;
         string jsonString = await response.Content.ReadAsStringAsync();
         var stream = JsonConvert.DeserializeObject<StreamObject>(jsonString);
 
         //Get Profile Info
-        HttpResponseMessage responseUser = await client.GetAsync($"https://api.twitch.tv/helix/users?login={_config["twitchchannel"]}");
+        HttpResponseMessage responseUser = await client.GetAsync($"https://api.twitch.tv/helix/users?login={_config["live-alert-streamer"]}");
         HttpContent responseUserContent = responseUser.Content;
         string jsonProfileString = await responseUser.Content.ReadAsStringAsync();
         var profile = JsonConvert.DeserializeObject<ProfileObject>(jsonProfileString);
@@ -100,7 +100,11 @@ namespace CentricXBot.Services
             .WithUrl($"https://twitch.tv/{stream.data[0].user_name}")
             .WithCurrentTimestamp();
         //Send Embed to channel
-        await _client.GetGuild(205388858265698304).GetTextChannel(758473454449459260).SendMessageAsync(embed: embed.Build());
+        //
+        ulong ChannelID = Convert.ToUInt64(_config["live-alert-channel"]);
+        var sendchannel = _client.GetChannel(ChannelID) as IMessageChannel; 
+        await sendchannel.SendMessageAsync(embed: embed.Build()); 
+
 
     }
         else
