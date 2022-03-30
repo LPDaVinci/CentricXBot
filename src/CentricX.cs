@@ -30,8 +30,11 @@ namespace CentricXBot
                 .WriteTo.Console()
                 .CreateLogger();
 
+
+
             new CentricX().MainAsync().GetAwaiter().GetResult();
         }
+    
 
         public CentricX()
         {
@@ -44,8 +47,13 @@ namespace CentricXBot
             _config = _builder.Build();
         }
 
+                
+
+
         public async Task MainAsync()
         {
+            
+                
             // call ConfigureServices to create the ServiceCollection/Provider for passing around the services
             using (var services = ConfigureServices())
             {
@@ -54,11 +62,12 @@ namespace CentricXBot
                 var client = services.GetRequiredService<DiscordSocketClient>();
                 _client = client;
 
+
+
                 // setup logging and the ready event
                 services.GetRequiredService<LoggingService>();
 
-                //get twitch handler service
-                 services.GetRequiredService<TwitchHandler>();
+                services.GetRequiredService<TwitchHandler>();
 
                 // this is where we get the Token value from the configuration file, and start the bot
                 await client.LoginAsync(TokenType.Bot, _config["token"]);
@@ -72,6 +81,7 @@ namespace CentricXBot
             }
         }
 
+
         private Task LogAsync(LogMessage log)
         {
             Console.WriteLine(log.ToString());
@@ -80,9 +90,10 @@ namespace CentricXBot
 
         private Task ReadyAsync()
         {
-            Console.WriteLine($"Connected as -> [{_client.CurrentUser}] :)");
             return Task.CompletedTask;
         }
+
+        
 
         // this method handles the ServiceCollection creation/configuration, and builds out the service provider we can call on later
         private ServiceProvider ConfigureServices()
@@ -93,7 +104,11 @@ namespace CentricXBot
             // the config we build is also added, which comes in handy for setting the command prefix!
             var services = new ServiceCollection()
                 .AddSingleton(_config)
-                .AddSingleton<DiscordSocketClient>()
+                .AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
+            {                                       // Add discord to the collection
+                MessageCacheSize = 100,            // Cache 1,000 messages per channel
+                GatewayIntents = GatewayIntents.GuildVoiceStates | GatewayIntents.Guilds | GatewayIntents.GuildMessages,
+            }))
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<LoggingService>()

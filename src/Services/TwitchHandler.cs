@@ -1,9 +1,5 @@
-﻿using System;
-using System.Reflection;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Discord;
-using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -21,6 +17,11 @@ namespace CentricXBot.Services
         private readonly Microsoft.Extensions.Logging.ILogger _logger;
         public TwitchHandler(IServiceProvider services)
         {
+            //Timer Infinite Loop need to check if not Live still Loop if live and posted dont post any new but still checks
+            System.Timers.Timer timer = new System.Timers.Timer(10000); //10 seconds
+            timer.Elapsed += async ( sender, e ) => TwitchTest();
+            timer.Start();
+
             // juice up the fields with these services
             // since we passed the services in, we can use GetRequiredService to pass them into the fields set earlier
             _config = services.GetRequiredService<IConfiguration>();
@@ -48,8 +49,6 @@ namespace CentricXBot.Services
         public List<Datum> data { get; set; }
 
     }   
-
-// Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     public class ProfileTwitch
     {
         [JsonProperty("profile_image_url")] public string profile_image_url { get; set; }
@@ -73,12 +72,13 @@ namespace CentricXBot.Services
         string jsonString = await response.Content.ReadAsStringAsync();
         var stream = JsonConvert.DeserializeObject<StreamObject>(jsonString);
 
-        //Get Profile Info
+        //Get Profile Info just for the profile picture
         HttpResponseMessage responseUser = await client.GetAsync($"https://api.twitch.tv/helix/users?login={_config["live-alert-streamer"]}");
         HttpContent responseUserContent = responseUser.Content;
         string jsonProfileString = await responseUser.Content.ReadAsStringAsync();
         var profile = JsonConvert.DeserializeObject<ProfileObject>(jsonProfileString);
 
+    //Check if the channel is not offline
     if (!(stream == default(StreamObject) || stream.data.Count == 0))
     {
         Console.WriteLine($"Live: {stream.data[0].type}");
@@ -99,20 +99,20 @@ namespace CentricXBot.Services
             .WithColor(Color.Blue)
             .WithUrl($"https://twitch.tv/{stream.data[0].user_name}")
             .WithCurrentTimestamp();
+
         //Send Embed to channel
-        //
         ulong ChannelID = Convert.ToUInt64(_config["live-alert-channel"]);
         var sendchannel = _client.GetChannel(ChannelID) as IMessageChannel; 
         await sendchannel.SendMessageAsync(embed: embed.Build()); 
 
 
     }
+        //If channel is offline do
         else
     {
         Console.WriteLine("Not Live");
     };
-        _logger.LogInformation("Twitch Status geladen");
-            
+            _logger.LogInformation("Twitch Handler loaded");  
     }
     }
 }
