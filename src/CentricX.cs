@@ -74,26 +74,13 @@ namespace CentricXBot
                 await client.StartAsync();
                 await client.SetGameAsync("LPDaVinci auf Twitch", "https://twitch.tv/lpdavinci", ActivityType.Streaming);
 
+                
                 // we get the CommandHandler class here and call the InitializeAsync method to start things up for the CommandHandler service
                 await services.GetRequiredService<CommandHandler>().InitializeAsync();
 
                 await Task.Delay(-1);
             }
         }
-
-
-        private Task LogAsync(LogMessage log)
-        {
-            Console.WriteLine(log.ToString());
-            return Task.CompletedTask;
-        }
-
-        private Task ReadyAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        
 
         // this method handles the ServiceCollection creation/configuration, and builds out the service provider we can call on later
         private ServiceProvider ConfigureServices()
@@ -106,8 +93,22 @@ namespace CentricXBot
                 .AddSingleton(_config)
                 .AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
             {                                       // Add discord to the collection
-                MessageCacheSize = 100,            // Cache 1,000 messages per channel
-                GatewayIntents = GatewayIntents.GuildVoiceStates | GatewayIntents.Guilds | GatewayIntents.GuildMessages,
+                    GatewayIntents = 
+                        GatewayIntents.GuildMembers | 
+                        GatewayIntents.GuildMessages | 
+                        GatewayIntents.GuildIntegrations | 
+                        GatewayIntents.Guilds |
+                        GatewayIntents.GuildBans |
+                        GatewayIntents.GuildVoiceStates |
+                        GatewayIntents.GuildEmojis | 
+                        GatewayIntents.GuildInvites | 
+                        GatewayIntents.GuildMessageReactions |
+                        GatewayIntents.GuildMessageTyping |
+                        GatewayIntents.GuildWebhooks |
+                        GatewayIntents.DirectMessageReactions |
+                        GatewayIntents.DirectMessages | 
+                        GatewayIntents.DirectMessageTyping,                                 
+                    MessageCacheSize = 1000,  
             }))
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandler>()
@@ -149,6 +150,5 @@ namespace CentricXBot
             var serviceProvider = services.BuildServiceProvider();
             return serviceProvider;
         }
-
     }
 }

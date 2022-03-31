@@ -35,6 +35,7 @@ namespace CentricXBot.Services
 
             // take action when we receive a message (so we can process it, and see if it is a valid command)
             _client.MessageReceived += MessageReceivedAsync;
+
         }
 
         public async Task InitializeAsync()
@@ -42,6 +43,7 @@ namespace CentricXBot.Services
             // register modules that are public and inherit ModuleBase<T>.
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
         }
+            
 
         // this class is where the magic starts, and takes actions upon receiving messages
         public async Task MessageReceivedAsync(SocketMessage rawMessage)
@@ -74,7 +76,6 @@ namespace CentricXBot.Services
             // execute command if one is found that matches
             await _commands.ExecuteAsync(context, argPos, _services);
         }
-
         public async Task CommandExecutedAsync(Optional<CommandInfo> command, ICommandContext context, IResult result)
         {
             // if a command isn't found, log that info to console and exit this method

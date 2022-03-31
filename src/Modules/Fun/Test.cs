@@ -16,20 +16,20 @@ namespace CentricXBot.Modules.Fun
     {
         [Command("test")]
         public async Task TestComand()
+        
         {
-            // initialize empty string builder for reply
-            var sb = new StringBuilder();
+            var embed = new EmbedBuilder()
+                {
+                    Title = "Garden of Salvation",
+                    Description = "Must be Level 1230",
+                                
+                }.Build();
 
-            // get user info from the Context
-            var user = Context.User;
+                var myReaction = new Emoji("👍");
 
-            // build out the reply
-            sb.AppendLine("TESTCOMMAND");
-
-            // send simple string reply
-            await ReplyAsync(sb.ToString());
+                var msg =  await Context.Channel.SendMessageAsync(embed: embed);
+                msg.AddReactionAsync(new Emoji("👍"));
+               
         }
-
-       
     }
 }

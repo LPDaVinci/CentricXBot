@@ -103,7 +103,8 @@ namespace CentricXBot.Services
         //Send Embed to channel
         ulong ChannelID = Convert.ToUInt64(_config["live-alert-channel"]);
         var sendchannel = _client.GetChannel(ChannelID) as IMessageChannel; 
-        await sendchannel.SendMessageAsync(embed: embed.Build()); 
+        var msg = await sendchannel.SendMessageAsync(embed: embed.Build()); 
+       
 
 
     }
