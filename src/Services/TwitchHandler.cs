@@ -15,10 +15,12 @@ namespace CentricXBot.Services
         private readonly DiscordSocketClient _client;
         private readonly IServiceProvider _services;
         private readonly Microsoft.Extensions.Logging.ILogger _logger;
+
+        private bool isLive = false;
         public TwitchHandler(IServiceProvider services)
         {
             //Timer Infinite Loop need to check if not Live still Loop if live and posted dont post any new but still checks
-            System.Timers.Timer timer = new System.Timers.Timer(10000); //10 seconds
+            System.Timers.Timer timer = new System.Timers.Timer(300000); //every 5 Minutes Check
             timer.Elapsed += async ( sender, e ) => TwitchTest();
             timer.Start();
 
@@ -61,6 +63,7 @@ namespace CentricXBot.Services
 
     public async Task TwitchTest()
     {
+        
         //Create new HttpClient
         var client = new HttpClient();
         //Send client-id and oauth token to Twitch API
@@ -81,39 +84,37 @@ namespace CentricXBot.Services
     //Check if the channel is not offline
     if (!(stream == default(StreamObject) || stream.data.Count == 0))
     {
-        Console.WriteLine($"Live: {stream.data[0].type}");
-        Console.WriteLine($"Streamer: {stream.data[0].user_name}");
-        Console.WriteLine($"Title: {stream.data[0].title}");
-        Console.WriteLine($"Game: {stream.data[0].game_name}");
-        Console.WriteLine($"ThumbnailURL: {stream.data[0].thumbnail_url.Replace("{width}x{height}","1920x1080")}");
-        Console.WriteLine($"Viewer Count: {stream.data[0].viewer_count}");
-        
-        //Create Embed
-        var embed = new EmbedBuilder{};
-        embed.WithFooter(footer => footer.Text = "CentricX")
-            .WithTitle($"{stream.data[0].title}")
-            .WithAuthor($"{stream.data[0].user_name} is now live on Twitch!", $"{profile.data[0].profile_image_url}")
-            
-            .WithImageUrl($"{stream.data[0].thumbnail_url.Replace("{width}x{height}","1920x1080")}")
-            .WithDescription($"Playing {stream.data[0].game_name} for {stream.data[0].viewer_count} viewers \n [Watch Stream](https://twitch.tv/{stream.data[0].user_name})")
-            .WithColor(Color.Blue)
-            .WithUrl($"https://twitch.tv/{stream.data[0].user_name}")
-            .WithCurrentTimestamp();
+        if (isLive == false) {
 
-        //Send Embed to channel
-        ulong ChannelID = Convert.ToUInt64(_config["live-alert-channel"]);
-        var sendchannel = _client.GetChannel(ChannelID) as IMessageChannel; 
-        var msg = await sendchannel.SendMessageAsync(embed: embed.Build()); 
-       
+            //Create Embed
+            var embed = new EmbedBuilder{};
+            embed.WithFooter(footer => footer.Text = "CentricX")
+                .WithTitle($"{stream.data[0].title}")
+                .WithAuthor($"{stream.data[0].user_name} is now live on Twitch!", $"{profile.data[0].profile_image_url}")
+                
+                .WithImageUrl($"{stream.data[0].thumbnail_url.Replace("{width}x{height}","1920x1080")}")
+                .WithDescription($"Playing {stream.data[0].game_name} for {stream.data[0].viewer_count} viewers \n [Watch Stream](https://twitch.tv/{stream.data[0].user_name})")
+                .WithColor(Color.Blue)
+                .WithUrl($"https://twitch.tv/{stream.data[0].user_name}")
+                .WithCurrentTimestamp();
 
-
+            //Send Embed to channel
+            ulong ChannelID = Convert.ToUInt64(_config["live-alert-channel"]);
+            var sendchannel = _client.GetChannel(ChannelID) as IMessageChannel; 
+            var msg = await sendchannel.SendMessageAsync(embed: embed.Build()); 
+            isLive = true;
+        }
+        else {
+            return;
+        }
     }
         //If channel is offline do
         else
     {
-        Console.WriteLine("Not Live");
-    };
-            _logger.LogInformation("Twitch Handler loaded");  
+        if (isLive == true) {
+        isLive = false;
+    }
+    }
     }
     }
 }
