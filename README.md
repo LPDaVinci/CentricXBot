@@ -8,17 +8,17 @@ Current version : 0.0.1-alpha
 Twitch Live Alert
 
 ## Planned: 
-Music features
-Reaction roles
-Embed
-DM Logging
-DM as Bot
-Ticket System
-Twitter Alert
-Youtube Upload Notify
-Auto Channel Create
-Invite Generator
-Slash Commands
+Music features  
+Reaction roles  
+Embed  
+DM Logging  
+DM as Bot  
+Ticket System  
+Twitter Alert  
+Youtube Upload Notify  
+Auto Channel Create  
+Invite Generator  
+Slash Commands  
 
 ## Installation:
 Rename config.json.default to config.json and add your Token in this file.  
