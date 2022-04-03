@@ -45,6 +45,8 @@ namespace CentricXBot
 
             // build the configuration and assign to _config          
             _config = _builder.Build();
+
+            
         }
 
                 
@@ -62,7 +64,7 @@ namespace CentricXBot
                 var client = services.GetRequiredService<DiscordSocketClient>();
                 _client = client;
 
-
+                
 
                 // setup logging and the ready event
                 services.GetRequiredService<LoggingService>();
@@ -73,14 +75,17 @@ namespace CentricXBot
                 await client.LoginAsync(TokenType.Bot, _config["token"]);
                 await client.StartAsync();
                 await client.SetGameAsync("LPDaVinci auf Twitch", "https://twitch.tv/lpdavinci", ActivityType.Streaming);
-
-                
+ 
                 // we get the CommandHandler class here and call the InitializeAsync method to start things up for the CommandHandler service
                 await services.GetRequiredService<CommandHandler>().InitializeAsync();
+                
+           
 
                 await Task.Delay(-1);
             }
         }
+
+
 
         // this method handles the ServiceCollection creation/configuration, and builds out the service provider we can call on later
         private ServiceProvider ConfigureServices()

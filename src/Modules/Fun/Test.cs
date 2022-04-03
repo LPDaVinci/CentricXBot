@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 namespace CentricXBot.Modules.Fun
 {
     // for commands to be available, and have the Context passed to them, we must inherit ModuleBase
-    public class Test : ModuleBase
+    public class Test : ModuleBase<SocketCommandContext>
     {
         [Command("test")]
         public async Task TestComand()
@@ -20,13 +20,14 @@ namespace CentricXBot.Modules.Fun
         {
             var embed = new EmbedBuilder()
                 {
-                    Title = "Garden of Salvation",
-                    Description = "Must be Level 1230",
+                    Title = "TestEmbed",
+                    Description = "Test",
                                 
                 }.Build();
 
                 var myReaction = new Emoji("👍");
 
+               
                 var msg =  await Context.Channel.SendMessageAsync(embed: embed);
                 msg.AddReactionAsync(new Emoji("👍"));
                
