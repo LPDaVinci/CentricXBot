@@ -1,7 +1,8 @@
 {
-    "token": "Your Bot Token",
+    "token": "bot-token",
     "prefix": ";",
-    "clientid": "Twitch-Client ID",
-    "oauth": "Twitch OAuth Token",
-    "twitchchannel": "Twitch Channel for Live Alert"
+    "clientid": "twitch-client-id",
+    "oauth": "twitch-oauth-token",
+    "live-alert-streamer": "twitchchannelname",
+    "live-alert-channel": "dcchannelidtopostalert"
 }
