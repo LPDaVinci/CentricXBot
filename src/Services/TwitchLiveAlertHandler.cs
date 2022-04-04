@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace CentricXBot.Services
 {
-    public class TwitchHandler
+    public class TwitchLiveAlertHandler
     {
        
     // setup fields to be set later in the constructor
@@ -17,11 +17,11 @@ namespace CentricXBot.Services
         private readonly Microsoft.Extensions.Logging.ILogger _logger;
 
         private bool isLive = false;
-        public TwitchHandler(IServiceProvider services)
+        public TwitchLiveAlertHandler(IServiceProvider services)
         {
             //Timer Infinite Loop need to check if not Live still Loop if live and posted dont post any new but still checks
             System.Timers.Timer timer = new System.Timers.Timer(300000); //every 5 Minutes Check
-            timer.Elapsed += async ( sender, e ) => TwitchTest();
+            timer.Elapsed += async ( sender, e ) => TwitchLiveAlert();
             timer.Start();
 
             // juice up the fields with these services
@@ -32,9 +32,9 @@ namespace CentricXBot.Services
             _services = services;
 
             // hook into these events with the methods provided below
-             _client.Ready += TwitchTest;
+             _client.Ready += TwitchLiveAlert;
         }
-    public class Datum
+    public class TwitchJsonData
     {
         [JsonProperty("id")] public string ID { get; set; }
         [JsonProperty("userId")] public string user_id { get; set; }
@@ -48,7 +48,7 @@ namespace CentricXBot.Services
     }
     public class StreamObject
     {
-        public List<Datum> data { get; set; }
+        public List<TwitchJsonData> data { get; set; }
 
     }   
     public class ProfileTwitch
@@ -61,7 +61,7 @@ namespace CentricXBot.Services
         public List<ProfileTwitch> data { get; set; }
     }
 
-    public async Task TwitchTest()
+    public async Task TwitchLiveAlert()
     {
         
         //Create new HttpClient

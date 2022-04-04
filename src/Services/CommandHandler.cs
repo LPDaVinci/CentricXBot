@@ -36,9 +36,6 @@ namespace CentricXBot.Services
             // take action when we receive a message (so we can process it, and see if it is a valid command)
             _client.MessageReceived += MessageReceivedAsync;
 
-            _client.ReactionAdded += ReactionAdd;
-
-
         }
 
 
@@ -80,20 +77,6 @@ namespace CentricXBot.Services
 
             // execute command if one is found that matches
             await _commands.ExecuteAsync(context, argPos, _services);
-        }
-
-         public async Task ReactionAdd(Cacheable<IUserMessage, ulong> message, Cacheable<IMessageChannel, ulong> channel, SocketReaction reaction)
-        {
-            if (_client.GetUser(reaction.UserId).IsBot) return;
-            var msg = await message.GetOrDownloadAsync();
-
-            
-                if (reaction.Emote.Name != "👍") return;
-                await (reaction.User.Value as SocketGuildUser).AddRoleAsync(913407637075394590);
-                Console.WriteLine(msg);
-           
-           
-
         }
         public async Task CommandExecutedAsync(Optional<CommandInfo> command, ICommandContext context, IResult result)
         {
