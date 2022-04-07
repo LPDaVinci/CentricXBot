@@ -69,16 +69,6 @@ namespace CentricXBot
                 services.GetRequiredService<TwitchLiveAlertHandler>();
 
                 // this is where we get the Token value from the configuration file, and start the bot
-
-                string token = _config["token"];
-
-                if (string.IsNullOrEmpty(token))
-                {
-                    Console.WriteLine("No Bot Token please add your dc token in the config.json");
-                    return;
-                }
-                    
-
                 await client.LoginAsync(TokenType.Bot, _config["token"]);
                 await client.StartAsync();
                 await client.SetGameAsync("LPDaVinci auf Twitch", "https://twitch.tv/lpdavinci", ActivityType.Streaming);
@@ -136,8 +126,8 @@ namespace CentricXBot
 	            .AddSingleton<IDiscordClientWrapper, DiscordClientWrapper>()
                 .AddSingleton(new LavalinkNodeOptions 
                 {
-                    RestUri = $"http://{_config["lavalink-ip"]}",
-	                WebSocketUri = $"ws://{_config["lavalink-ip"]}",
+                    RestUri = $"http://{_config["lavalink-ip"]}:{_config["lavalink-port"]}",
+	                WebSocketUri = $"ws://{_config["lavalink-ip"]}:{_config["lavalink-port"]}",
                     Password = _config["lavalink-pw"]
                 }
                 )

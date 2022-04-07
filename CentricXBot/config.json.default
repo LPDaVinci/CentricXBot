@@ -6,5 +6,6 @@
     "live-alert-streamer": "Twicht Channel Name",
     "live-alert-channel": "PostAlert ChannelID",
     "lavalink-pw": "someStrongPasswordHere",
-    "lavalink-ip": "127.0.0.1:2333"
+    "lavalink-ip": "127.0.0.1",
+    "lavalink-port": "2333"
 }
