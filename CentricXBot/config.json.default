@@ -1,5 +1,5 @@
 {
-    "token": "BOT-TOKEN",
+    "token": "",
     "prefix": ";",
     "clientid": "Twitch-CLIENTID",
     "oauth": "TWITCH-OAUTH TOKEN",
