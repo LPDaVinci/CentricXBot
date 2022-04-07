@@ -1,6 +1,8 @@
 #ignore .gitattributes
 .gitattributes
 
+#ignore github folder
+.github/
 #ignore config.json
 config.json
 
