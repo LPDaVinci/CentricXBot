@@ -1,6 +1,4 @@
-﻿using System;
-using Discord;
-using Discord.Net;
+﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
@@ -8,16 +6,21 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using CentricXBot.Services;
 using Serilog;
+using Lavalink4NET;
+using Lavalink4NET.DiscordNet;
+using System.Diagnostics;
 
 //Name
 namespace CentricXBot
 {
+
     class CentricX
     {
         // setup our fields we assign later
         private readonly IConfiguration _config;
         private DiscordSocketClient _client;
         private static string _logLevel;
+
 
         static void Main(string[] args = null)
         {
@@ -31,8 +34,8 @@ namespace CentricXBot
                 .CreateLogger();
 
 
-
-            new CentricX().MainAsync().GetAwaiter().GetResult();
+             new CentricX().MainAsync().GetAwaiter().GetResult();
+            
         }
     
 
@@ -64,26 +67,35 @@ namespace CentricXBot
                 var client = services.GetRequiredService<DiscordSocketClient>();
                 _client = client;
 
-                
+                var audio = services.GetRequiredService<IAudioService>();
 
                 // setup logging and the ready event
                 services.GetRequiredService<LoggingService>();
 
                 services.GetRequiredService<TwitchLiveAlertHandler>();
 
+
+
                 // this is where we get the Token value from the configuration file, and start the bot
                 await client.LoginAsync(TokenType.Bot, _config["token"]);
                 await client.StartAsync();
                 await client.SetGameAsync("LPDaVinci auf Twitch", "https://twitch.tv/lpdavinci", ActivityType.Streaming);
- 
+
+                _client.Ready += () => audio.InitializeAsync();
+
+                
+
                 // we get the CommandHandler class here and call the InitializeAsync method to start things up for the CommandHandler service
                 await services.GetRequiredService<CommandHandler>().InitializeAsync();
                 
                 await services.GetRequiredService<ReactionHandler>().InitializeAsync();
 
-                await Task.Delay(-1);
+                
+
+                   await Task.Delay(-1);
             }
         }
+
 
 
 
@@ -120,6 +132,19 @@ namespace CentricXBot
                 .AddSingleton<ReactionHandler>()
                 .AddSingleton<LoggingService>()
                 .AddSingleton<TwitchLiveAlertHandler>()
+
+                //Lavalink
+                .AddSingleton<IAudioService, LavalinkNode>()	
+	            .AddSingleton<IDiscordClientWrapper, DiscordClientWrapper>()
+                .AddSingleton(new LavalinkNodeOptions 
+                {
+                    RestUri = $"http://{_config["lavalink-ip"]}",
+	                WebSocketUri = $"ws://{_config["lavalink-ip"]}",
+                    Password = _config["lavalink-pw"]
+                }
+                )
+
+                //Logging
                 .AddLogging(configure => configure.AddSerilog());
 
             if (!string.IsNullOrEmpty(_logLevel))

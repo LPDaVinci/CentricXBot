@@ -5,11 +5,11 @@
 
 Current version : 0.0.1-alpha  
 ## Features:  
-Twitch Live Alert
-
-## Planned: 
-Music features  
+Twitch Live Alert  
+Music features(Needs Lavalink)    
 Reaction roles  
+
+## Planned:  
 Embed  
 DM Logging  
 DM as Bot  
