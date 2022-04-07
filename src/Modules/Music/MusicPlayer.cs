@@ -12,14 +12,14 @@ using Lavalink4NET;
 using Lavalink4NET.Rest;
 using Lavalink4NET.Player;
 
-namespace CentricXBot.Modules.Fun
+namespace CentricXBot.Modules.Music
 {
     // for commands to be available, and have the Context passed to them, we must inherit ModuleBase
-    public class Music : ModuleBase<SocketCommandContext>
+    public class MusicPlayer : ModuleBase<SocketCommandContext>
     {
         private readonly IAudioService _audioService;
 
-         public Music(IAudioService audioService)
+         public MusicPlayer(IAudioService audioService)
         => _audioService = audioService ?? throw new ArgumentNullException(nameof(audioService));
         
 /// <summary>
@@ -69,11 +69,11 @@ namespace CentricXBot.Modules.Fun
 
         if (position == 0)
         {
-            await ReplyAsync("🔈 Playing: " + track.Source);
+            await ReplyAsync("🔈 Playing: " + track.Title);
         }
         else
         {
-            await ReplyAsync("🔈 Added to queue: " + track.Source);
+            await ReplyAsync("🔈 Added to queue: " + track.Title);
         }
     }
 

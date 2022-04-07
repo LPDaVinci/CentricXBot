@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace CentricXBot.Services
+namespace CentricXBot.Handler
 {
     public class TwitchLiveAlertHandler
     {
@@ -34,6 +34,7 @@ namespace CentricXBot.Services
             // hook into these events with the methods provided below
              _client.Ready += TwitchLiveAlert;
         }
+        
     public class TwitchJsonData
     {
         [JsonProperty("id")] public string ID { get; set; }

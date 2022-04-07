@@ -4,6 +4,7 @@ using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using CentricXBot.Handler;
 using CentricXBot.Services;
 using Serilog;
 using Lavalink4NET;
@@ -83,6 +84,7 @@ namespace CentricXBot
                 await client.StartAsync();
                 await client.SetGameAsync("LPDaVinci auf Twitch", "https://twitch.tv/lpdavinci", ActivityType.Streaming);
 
+      
                 _client.Ready += () => audio.InitializeAsync();
 
                 services.GetRequiredService<InactivityTrackingService>().BeginTracking();
