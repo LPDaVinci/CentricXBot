@@ -18,7 +18,6 @@ namespace CentricXBot.Modules.Music
     public class MusicPlayer : ModuleBase<SocketCommandContext>
     {
         private readonly IAudioService _audioService;
-
          public MusicPlayer(IAudioService audioService)
         => _audioService = audioService ?? throw new ArgumentNullException(nameof(audioService));
         

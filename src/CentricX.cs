@@ -10,7 +10,6 @@ using Serilog;
 using Lavalink4NET;
 using Lavalink4NET.DiscordNet;
 using Lavalink4NET.Tracking;
-using System.Diagnostics;
 
 //Name
 namespace CentricXBot
@@ -92,7 +91,7 @@ namespace CentricXBot
                 // we get the CommandHandler class here and call the InitializeAsync method to start things up for the CommandHandler service
                 await services.GetRequiredService<CommandHandler>().InitializeAsync();
                 
-                await services.GetRequiredService<ReactionHandler>().InitializeAsync();
+                services.GetRequiredService<ReactionHandler>();
 
                    await Task.Delay(-1);
             }

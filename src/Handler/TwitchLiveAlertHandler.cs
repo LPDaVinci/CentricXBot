@@ -2,7 +2,6 @@
 using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace CentricXBot.Handler
@@ -14,7 +13,6 @@ namespace CentricXBot.Handler
         private readonly IConfiguration _config;
         private readonly DiscordSocketClient _client;
         private readonly IServiceProvider _services;
-        private readonly Microsoft.Extensions.Logging.ILogger _logger;
 
         private bool isLive = false;
         public TwitchLiveAlertHandler(IServiceProvider services)
@@ -28,10 +26,8 @@ namespace CentricXBot.Handler
             // since we passed the services in, we can use GetRequiredService to pass them into the fields set earlier
             _config = services.GetRequiredService<IConfiguration>();
             _client = services.GetRequiredService<DiscordSocketClient>();
-            _logger = services.GetRequiredService<ILogger<CommandHandler>>();
             _services = services;
 
-            // hook into these events with the methods provided below
              _client.Ready += TwitchLiveAlert;
         }
         
@@ -50,7 +46,6 @@ namespace CentricXBot.Handler
     public class StreamObject
     {
         public List<TwitchJsonData> data { get; set; }
-
     }   
     public class ProfileTwitch
     {

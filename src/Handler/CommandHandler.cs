@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Discord;
 using Discord.Commands;
@@ -30,24 +28,15 @@ namespace CentricXBot.Handler
             _logger = services.GetRequiredService<ILogger<CommandHandler>>();
             _services = services;
 
-            // take action when we execute a command
             _commands.CommandExecuted += CommandExecutedAsync;
-
-            // take action when we receive a message (so we can process it, and see if it is a valid command)
             _client.MessageReceived += MessageReceivedAsync;
 
         }
-
-
-
         public async Task InitializeAsync()
         {
             // register modules that are public and inherit ModuleBase<T>.
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
         }
-            
-
-        // this class is where the magic starts, and takes actions upon receiving messages
         public async Task MessageReceivedAsync(SocketMessage rawMessage)
         {
             // ensures we don't process system/other bot messages
@@ -60,14 +49,10 @@ namespace CentricXBot.Handler
             {
                 return;
             }
-
-            // sets the argument position away from the prefix we set
             var argPos = 0;
 
-            // get prefix from the configuration file
             char prefix = Char.Parse(_config["prefix"]);
 
-            // determine if the message has a valid prefix, and adjust argPos based on prefix
             if (!(message.HasMentionPrefix(_client.CurrentUser, ref argPos) || message.HasCharPrefix(prefix, ref argPos)))
             {
                 return;
