@@ -8,6 +8,7 @@ using CentricXBot.Services;
 using Serilog;
 using Lavalink4NET;
 using Lavalink4NET.DiscordNet;
+using Lavalink4NET.Tracking;
 using System.Diagnostics;
 
 //Name
@@ -58,7 +59,7 @@ namespace CentricXBot
         public async Task MainAsync()
         {
             
-                
+               
             // call ConfigureServices to create the ServiceCollection/Provider for passing around the services
             using (var services = ConfigureServices())
             {
@@ -69,6 +70,7 @@ namespace CentricXBot
 
                 var audio = services.GetRequiredService<IAudioService>();
 
+                
                 // setup logging and the ready event
                 services.GetRequiredService<LoggingService>();
 
@@ -83,20 +85,16 @@ namespace CentricXBot
 
                 _client.Ready += () => audio.InitializeAsync();
 
-                
+                services.GetRequiredService<InactivityTrackingService>().BeginTracking();
 
                 // we get the CommandHandler class here and call the InitializeAsync method to start things up for the CommandHandler service
                 await services.GetRequiredService<CommandHandler>().InitializeAsync();
                 
                 await services.GetRequiredService<ReactionHandler>().InitializeAsync();
 
-                
-
                    await Task.Delay(-1);
             }
         }
-
-
 
 
         // this method handles the ServiceCollection creation/configuration, and builds out the service provider we can call on later
@@ -127,6 +125,7 @@ namespace CentricXBot
                         GatewayIntents.DirectMessageTyping,                                 
                     MessageCacheSize = 1000,  
             }))
+            
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<ReactionHandler>()
@@ -143,9 +142,13 @@ namespace CentricXBot
                     Password = _config["lavalink-pw"]
                 }
                 )
+                .AddSingleton<InactivityTrackingOptions>()
+                .AddSingleton<InactivityTrackingService>()
 
                 //Logging
                 .AddLogging(configure => configure.AddSerilog());
+
+
 
             if (!string.IsNullOrEmpty(_logLevel))
             {
@@ -180,6 +183,7 @@ namespace CentricXBot
 
             var serviceProvider = services.BuildServiceProvider();
             return serviceProvider;
+
         }
     }
 }
