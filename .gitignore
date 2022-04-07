@@ -4,6 +4,9 @@
 #ignore config.json
 config.json
 
+#ignore application.yml
+application.yml
+
 # ignore visual studio
 *.csproj
 *.njsproj
