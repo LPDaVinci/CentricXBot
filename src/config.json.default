@@ -1,8 +1,10 @@
 {
-    "token": "bot-token",
+    "token": "BOT-TOKEN",
     "prefix": ";",
-    "clientid": "twitch-client-id",
-    "oauth": "twitch-oauth-token",
-    "live-alert-streamer": "twitchchannelname",
-    "live-alert-channel": "dcchannelidtopostalert"
+    "clientid": "Twitch-CLIENTID",
+    "oauth": "TWITCH-OAUTH TOKEN",
+    "live-alert-streamer": "Twicht Channel Name",
+    "live-alert-channel": "PostAlert ChannelID",
+    "lavalink-pw": "someStrongPasswordHere",
+    "lavalink-ip": "127.0.0.1:2333"
 }
