@@ -2,7 +2,6 @@
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using CentricXBot.Handler;
 using CentricXBot.Services;
@@ -10,6 +9,7 @@ using Serilog;
 using Lavalink4NET;
 using Lavalink4NET.DiscordNet;
 using Lavalink4NET.Tracking;
+using Microsoft.Extensions.Logging;
 
 //Name
 namespace CentricXBot
@@ -49,17 +49,9 @@ namespace CentricXBot
 
             // build the configuration and assign to _config          
             _config = _builder.Build();
-
-            
         }
-
-                
-
-
         public async Task MainAsync()
         {
-            
-               
             // call ConfigureServices to create the ServiceCollection/Provider for passing around the services
             using (var services = ConfigureServices())
             {
@@ -76,14 +68,11 @@ namespace CentricXBot
 
                 services.GetRequiredService<TwitchLiveAlertHandler>();
 
-
-
                 // this is where we get the Token value from the configuration file, and start the bot
                 await client.LoginAsync(TokenType.Bot, _config["token"]);
                 await client.StartAsync();
                 await client.SetGameAsync("LPDaVinci auf Twitch", "https://twitch.tv/lpdavinci", ActivityType.Streaming);
 
-      
                 _client.Ready += () => audio.InitializeAsync();
 
                 services.GetRequiredService<InactivityTrackingService>().BeginTracking();
@@ -130,7 +119,6 @@ namespace CentricXBot
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<ReactionHandler>()
-                .AddSingleton<LoggingService>()
                 .AddSingleton<TwitchLiveAlertHandler>()
 
                 //Lavalink
@@ -147,9 +135,8 @@ namespace CentricXBot
                 .AddSingleton<InactivityTrackingService>()
 
                 //Logging
+                .AddSingleton<LoggingService>()
                 .AddLogging(configure => configure.AddSerilog());
-
-
 
             if (!string.IsNullOrEmpty(_logLevel))
             {
