@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Discord.Interactions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CentricXBot.Handler;
@@ -106,7 +107,7 @@ namespace CentricXBot
                         GatewayIntents.GuildBans |
                         GatewayIntents.GuildVoiceStates |
                         GatewayIntents.GuildEmojis | 
-                        GatewayIntents.GuildInvites | 
+                        //GatewayIntents.GuildInvites | 
                         GatewayIntents.GuildMessageReactions |
                         GatewayIntents.GuildMessageTyping |
                         GatewayIntents.GuildWebhooks |

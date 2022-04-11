@@ -72,16 +72,25 @@ namespace CentricXBot.Handler
                 return;
             }
 
+            if (!result.IsSuccess)
+                    switch (result.Error)
+                    {
+                        case CommandError.BadArgCount:
+                            await context.Channel.SendMessageAsync("Bad argument count.");
+                            break;
+                        case CommandError.UnknownCommand:
+                            break;
+                        case CommandError.Exception:
+                            // This is what happens instead of the catch block.
+                            break;
+                        default:
+                            await context.Channel.SendMessageAsync($"You 👏👏 Broke 👏👏 It ({result.ErrorReason})");
+                            break;
 
-            // log success to the console and exit this method
-            if (result.IsSuccess)
-            {
-                _logger.LogInformation($"Command [{command.Value.Name}] executed for [{context.User.Username}] on [{context.Guild.Name}]");
-                return;
-            }
-
-            // failure scenario, let's let the user know
-            await context.Channel.SendMessageAsync($"Sorry, {context.User.Username}... something went wrong -> [{result}]!");
+                    } else{
+                        _logger.LogInformation($"Command [{command.Value.Name}] executed for [{context.User.Username}] on [{context.Guild.Name}]");
+                        return;
+                    }           }
         }
     }
-}
+
