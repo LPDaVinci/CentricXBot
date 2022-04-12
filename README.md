@@ -8,11 +8,11 @@ Current version : 0.0.1-alpha
 Twitch Live Alert  
 Music features(Needs Lavalink)    
 Reaction roles  
-
-## Planned:  
 Embed  
 DM Logging  
 DM as Bot  
+
+## Planned:  
 Ticket System  
 Twitter Alert  
 Youtube Upload Notify  
