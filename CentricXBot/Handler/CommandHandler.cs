@@ -39,6 +39,11 @@ namespace CentricXBot.Handler
         }
         public async Task MessageReceivedAsync(SocketMessage rawMessage)
         {
+
+            
+
+
+            
             // ensures we don't process system/other bot messages
             if (!(rawMessage is SocketUserMessage message))
             {
@@ -49,16 +54,51 @@ namespace CentricXBot.Handler
             {
                 return;
             }
-            var argPos = 0;
 
+            var argPos = 0;
             char prefix = Char.Parse(_config["prefix"]);
+
+            var Date = DateTime.Now;
+            if (message.Channel is IPrivateChannel) {
+
+                if (!(message.HasCharPrefix(prefix, ref argPos))) {
+                    ulong channelID = Convert.ToUInt64(_config["live-alert-channel"]);
+                    var channel = _client.GetChannel(channelID) as SocketTextChannel;
+
+            var exampleFooter = new EmbedFooterBuilder()
+                .WithText("CentricX © 2022")
+                .WithIconUrl("https://static-cdn.jtvnw.net/jtv_user_pictures/24447486-ab3e-4871-8ecd-67c5e5cb69d1-profile_image-70x70.png");
+            var embed = new EmbedBuilder{};
+            embed.WithFooter(exampleFooter)
+            .WithTitle("NEW DM")
+            .WithDescription($"**User:** {message.Author.Mention} \n\n**Content:** {message}")
+            .WithCurrentTimestamp()
+            .WithColor(Color.Blue);
+            
+            await channel.SendMessageAsync("", false, embed.Build());
+
+
+
+                } else{
+                await message.Channel.SendMessageAsync("No Commands in DM");
+                return;
+                }
+                
+            } 
 
             if (!(message.HasMentionPrefix(_client.CurrentUser, ref argPos) || message.HasCharPrefix(prefix, ref argPos)))
             {
                 return;
             }
 
+        
+
+
+
+
             var context = new SocketCommandContext(_client, message);
+
+
 
             // execute command if one is found that matches
             await _commands.ExecuteAsync(context, argPos, _services);
@@ -77,6 +117,9 @@ namespace CentricXBot.Handler
                     {
                         case CommandError.BadArgCount:
                             await context.Channel.SendMessageAsync("Bad argument count.");
+                            break;
+                        case CommandError.ObjectNotFound:
+                            await context.Channel.SendMessageAsync("User not found.");
                             break;
                         case CommandError.UnknownCommand:
                             break;
