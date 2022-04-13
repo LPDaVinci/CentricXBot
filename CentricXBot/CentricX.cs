@@ -68,6 +68,8 @@ namespace CentricXBot
 
                 services.GetRequiredService<TwitchLiveAlertHandler>();
 
+                services.GetRequiredService<GuildJoinHandler>();
+
                 // this is where we get the Token value from the configuration file, and start the bot
                 await client.LoginAsync(TokenType.Bot, _config["token"]);
                 await client.StartAsync();
@@ -120,7 +122,7 @@ namespace CentricXBot
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<ReactionHandler>()
                 .AddSingleton<TwitchLiveAlertHandler>()
-
+                .AddSingleton<GuildJoinHandler>()
                 //Lavalink
                 .AddSingleton<IAudioService, LavalinkNode>()	
 	            .AddSingleton<IDiscordClientWrapper, DiscordClientWrapper>()

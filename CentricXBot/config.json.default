@@ -7,5 +7,6 @@
     "live-alert-channel": "PostAlert ChannelID",
     "lavalink-pw": "someStrongPasswordHere",
     "lavalink-ip": "127.0.0.1",
-    "lavalink-port": "2333"
+    "lavalink-port": "2333",
+    "botrole": "207112270860255232"
 }
