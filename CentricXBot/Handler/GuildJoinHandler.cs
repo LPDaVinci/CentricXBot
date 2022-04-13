@@ -38,9 +38,9 @@ namespace CentricXBot.Handler
         public async Task HandleUserLeftAsync(SocketGuild guild, SocketUser user)
         {
             var channel = _client.GetChannel(958338678286065706) as SocketTextChannel; // Gets the channel to send the message in
-            await channel.SendMessageAsync($"Bye {user.Mention} to {channel.Guild.Name}"); //Welcomes the new user
+            await channel.SendMessageAsync($"Bye {user.Mention} to {guild.Name}"); //Welcomes the new user
            _logger.LogInformation($"User [{user.Mention}] hat den Server verlassen.");
         }
-       
+
         }
     }
