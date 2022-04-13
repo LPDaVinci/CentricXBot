@@ -28,9 +28,9 @@ namespace CentricXBot.Modules.Fun
                 var myReaction = new Emoji("👍");
 
                
-                var msg =  await Context.Channel.SendMessageAsync(embed: embed);
+                var msg = await Context.Channel.SendMessageAsync(embed: embed);
                 
-                msg.AddReactionAsync(new Emoji("👍"));
+                await msg.AddReactionAsync(new Emoji("👍"));
                
         }
     }

@@ -19,7 +19,7 @@ namespace CentricXBot.Handler
         {
             //Timer Infinite Loop need to check if not Live still Loop if live and posted dont post any new but still checks
             System.Timers.Timer timer = new System.Timers.Timer(300000); //every 5 Minutes Check
-            timer.Elapsed += async ( sender, e ) => TwitchLiveAlert();
+            timer.Elapsed += async ( sender, e ) => await TwitchLiveAlert(); //added await
             timer.Start();
 
             // juice up the fields with these services
