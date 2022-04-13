@@ -93,10 +93,12 @@ namespace CentricXBot.Handler
                 .WithColor(Color.Blue)
                 .WithUrl($"https://twitch.tv/{stream.data[0].user_name}")
                 .WithCurrentTimestamp();
+            //Send Text Before Embed:
 
             //Send Embed to channel
             ulong ChannelID = Convert.ToUInt64(_config["live-alert-channel"]);
             var sendchannel = _client.GetChannel(ChannelID) as IMessageChannel; 
+            var text = await sendchannel.SendMessageAsync($"@everyone\n:star: {stream.data[0].user_name} ist live!\n\n");
             var msg = await sendchannel.SendMessageAsync(embed: embed.Build()); 
             isLive = true;
         }
