@@ -19,6 +19,7 @@ Twitter Alert
 Youtube Upload Notify    
 Invite Generator  
 Slash Commands  
+Member Counter  
 
 ## Installation:
 Rename config.json.default to config.json and add your Token in this file.  
