@@ -11,12 +11,12 @@ Reaction roles
 Embed  
 DM Logging  
 DM as Bot  
+Auto Channel Create  
 
 ## Planned:  
 Ticket System  
 Twitter Alert  
-Youtube Upload Notify  
-Auto Channel Create  
+Youtube Upload Notify    
 Invite Generator  
 Slash Commands  
 
