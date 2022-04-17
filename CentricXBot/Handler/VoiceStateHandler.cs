@@ -26,10 +26,54 @@ namespace CentricXBot.Handler
         }
         public async Task HandleVoiceState(SocketUser user, SocketVoiceState before, SocketVoiceState after)
         {
-           Console.WriteLine($"VoiceStateUpdate: {user} - {before.VoiceChannel?.Name ?? "null"} -> {after.VoiceChannel?.Name ?? "null"}");
-        //needs await
-        }
+                Console.WriteLine($"VoiceStateUpdate: {user} - {before.VoiceChannel?.Name ?? "null"} -> {after.VoiceChannel?.Name ?? "null"}");
+                if (user is SocketGuildUser socketGuildUser)
+                {
+                    var server = socketGuildUser.Guild;
+                    var autocreateid = Convert.ToUInt64($"{_config["autocreatechannelid"]}");
+                    var autocreatecategoryid = Convert.ToUInt64($"{_config["autocreatecategoryid"]}");
+                    bool userWannaCreateTempChannel = socketGuildUser.VoiceState?.VoiceChannel.Id == autocreateid;
+                    if (userWannaCreateTempChannel) //Join to Create Channel
+                    {
+                        //Create VC
+                        var voiceChannel = await server.CreateVoiceChannelAsync(socketGuildUser.Username, prop => prop.CategoryId = autocreatecategoryid);
+                        //Gives User Full Permissions over his Channel
+                        await voiceChannel.AddPermissionOverwriteAsync(user, new OverwritePermissions(connect: PermValue.Allow, viewChannel: PermValue.Allow, manageChannel: PermValue.Allow));
+                        
+                        //Move User in his Temp Channel
+                        await socketGuildUser.ModifyAsync(x =>
+                        {
+                            x.Channel = Optional.Create(voiceChannel as IVoiceChannel);
+                        });
+
+                    }
+                    var usersVoiceChannel = (socketGuildUser as IVoiceState).VoiceChannel;
+                    if (usersVoiceChannel == null)
+
+                        {
+                        if ((after.VoiceChannel != before.VoiceChannel)
+                                && before.VoiceChannel.Category.Id.Equals(autocreatecategoryid) 
+                                && before.VoiceChannel.Users.Count == 0 
+                                && !before.VoiceChannel.Id.Equals(autocreateid))
+                            {
+                                await before.VoiceChannel.DeleteAsync();
+                            } 
+                        }else{
+                            if (!(before.VoiceChannel == null)
+                                && before.VoiceChannel.Category.Id.Equals(autocreatecategoryid) 
+                                && before.VoiceChannel.Users.Count == 0 
+                                && !before.VoiceChannel.Id.Equals(autocreateid))
+                            {
+                                await before.VoiceChannel.DeleteAsync();
+                            } 
+                        }
+                        
+                        
+                            } 
+                        }
+                    } 
+                }
 
 
-        }
-    }
+
+

@@ -8,5 +8,7 @@
     "lavalink-pw": "someStrongPasswordHere",
     "lavalink-ip": "127.0.0.1",
     "lavalink-port": "2333",
-    "botrole": "207112270860255232"
+    "botrole": "207112270860255232",
+    "autocreatechannelid": "965259480281546792",
+    "autocreatecategoryid": "965240216170401862"
 }

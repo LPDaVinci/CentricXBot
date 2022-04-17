@@ -80,8 +80,12 @@ namespace CentricXBot.Handler
 
 
                 } else{
+                    if ((message.HasCharPrefix(prefix, ref argPos) && message.Content.Contains("help"))) {
+                        await message.Channel.SendMessageAsync("You only can run the help command in the guild not in dm");
+                    } else {
                 await message.Channel.SendMessageAsync("No Commands in DM");
                 return;
+                }
                 }
                 
             } 
