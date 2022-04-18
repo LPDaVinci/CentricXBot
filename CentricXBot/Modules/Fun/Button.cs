@@ -28,8 +28,8 @@ namespace CentricXBot.Modules.Fun
             .WithColor(Color.Blue);
 
         var msg = await Context.Channel.SendMessageAsync("",false, embed.Build(), components: builder.Build());
-
-
+        await Task.Delay(2000);
+        await Context.Message.DeleteAsync();
 }
                
         }

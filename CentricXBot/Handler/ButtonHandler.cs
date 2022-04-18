@@ -31,7 +31,11 @@ namespace CentricXBot.Handler
         // Since we set our buttons custom id as 'custom-id', we can check for it like this:
             case "test-1":
             // Lets respond by sending a message saying they clicked the button
+            
+                await component.Message.DeleteAsync();
                 await component.RespondAsync($"{component.User.Mention} has clicked the button!");
+                await component.DeleteOriginalResponseAsync();
+                
         break;
             case "test-2":
             // Lets respond by sending a message saying they clicked the button
