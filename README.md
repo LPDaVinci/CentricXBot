@@ -12,12 +12,13 @@ Embed
 DM Logging  
 DM as Bot  
 Auto Channel Create  
+Invite Generator  
+TextChannel Create Command  
 
 ## Planned:  
 Ticket System  
 Twitter Alert  
 Youtube Upload Notify    
-Invite Generator  
 Slash Commands  
 Member Counter  
 
