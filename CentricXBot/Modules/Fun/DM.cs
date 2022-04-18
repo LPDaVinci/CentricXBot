@@ -33,6 +33,7 @@ namespace CentricXBot.Modules.Fun
             try
         {
             await user.SendMessageAsync("", false, embed.Build());
+            
         }
         catch (Exception)
         {
