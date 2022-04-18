@@ -23,7 +23,9 @@ namespace CentricXBot.Handler
 
             _client.ReactionRemoved += ReactionRemove;
 
+
         }
+
         public async Task ReactionAdd(Cacheable<IUserMessage, ulong> message, Cacheable<IMessageChannel, ulong> channel, SocketReaction reaction)
         {
             if (_client.GetUser(reaction.UserId).IsBot) return;

@@ -86,6 +86,8 @@ namespace CentricXBot
                 
                 services.GetRequiredService<ReactionHandler>();
 
+                 services.GetRequiredService<ButtonHandler>();
+
                    await Task.Delay(-1);
             }
         }
@@ -123,6 +125,7 @@ namespace CentricXBot
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<ReactionHandler>()
+                .AddSingleton<ButtonHandler>()
                 .AddSingleton<TwitchLiveAlertHandler>()
                 .AddSingleton<GuildJoinHandler>()
                 .AddSingleton<VoiceStateHandler>()
