@@ -21,10 +21,14 @@ namespace CentricXBot.Modules.Fun
     }
     else
     {       
- 
+            if (text == null) {
+                await user.ModifyAsync(x => {
+                x.Nickname = $"";
+            });} else
+            {
             await user.ModifyAsync(x => {
                 x.Nickname = $"{text}";
-            });
+            });}
        
             
                
