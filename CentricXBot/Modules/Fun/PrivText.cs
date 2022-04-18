@@ -24,8 +24,9 @@ namespace CentricXBot.Modules.Fun
             
           var myChannel = await Context.Guild.CreateTextChannelAsync("test");
           var permissionOverrides = new OverwritePermissions(viewChannel:PermValue.Deny);
-        myChannel.AddPermissionOverwriteAsync(Context.Guild.EveryoneRole, permissionOverrides);
-
+          var permissionOverrides2 = new OverwritePermissions(viewChannel:PermValue.Allow);
+            await myChannel.AddPermissionOverwriteAsync(Context.Guild.EveryoneRole, permissionOverrides);
+            await myChannel.AddPermissionOverwriteAsync(Context.User, permissionOverrides2);
 
        
             
