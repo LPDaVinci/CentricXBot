@@ -6,7 +6,7 @@ namespace CentricXBot.Modules.Fun
 {
     // for commands to be available, and have the Context passed to them, we must inherit ModuleBase
     [Summary("The Game Module")]
-        public class Hello : ModuleBase
+        public class Hello : ModuleBase<SocketCommandContext>
     {
         [Command("hello")]
         [Summary("PrintsHello")]

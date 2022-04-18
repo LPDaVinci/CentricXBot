@@ -105,21 +105,22 @@ namespace CentricXBot
                 .AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
             {                                       // Add discord to the collection
                     GatewayIntents = 
-                        GatewayIntents.GuildMembers | 
-                        GatewayIntents.GuildMessages | 
-                        GatewayIntents.GuildIntegrations | 
-                        GatewayIntents.Guilds |
-                        GatewayIntents.GuildBans |
-                        GatewayIntents.GuildVoiceStates |
-                        GatewayIntents.GuildEmojis | 
-                        //GatewayIntents.GuildInvites | 
-                        GatewayIntents.GuildMessageReactions |
-                        GatewayIntents.GuildMessageTyping |
-                        GatewayIntents.GuildWebhooks |
-                        GatewayIntents.DirectMessageReactions |
-                        GatewayIntents.DirectMessages | 
+                        GatewayIntents.GuildMembers| 
+                        GatewayIntents.GuildMessages| 
+                        GatewayIntents.GuildIntegrations| 
+                        GatewayIntents.Guilds|
+                        GatewayIntents.GuildBans|
+                        GatewayIntents.GuildVoiceStates|
+                        GatewayIntents.GuildEmojis| 
+                        //GatewayIntents.GuildInvites| 
+                        GatewayIntents.GuildMessageReactions|
+                        GatewayIntents.GuildMessageTyping|
+                        GatewayIntents.GuildWebhooks|
+                        GatewayIntents.DirectMessageReactions|
+                        GatewayIntents.DirectMessages| 
                         GatewayIntents.DirectMessageTyping,                                 
                     MessageCacheSize = 1000,  
+                    AlwaysDownloadUsers = true,
             }))
             
                 .AddSingleton<CommandService>()

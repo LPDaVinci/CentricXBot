@@ -30,7 +30,15 @@ namespace CentricXBot.Modules.Fun
             .WithDescription($"**CentricX**\n\n{text}")
             .WithColor(Color.Blue);
             
+            try
+        {
             await user.SendMessageAsync("", false, embed.Build());
+        }
+        catch (Exception)
+        {
+            await Context.Channel.SendMessageAsync("DMs closed" );
+        }
+            
                
         }
         }
