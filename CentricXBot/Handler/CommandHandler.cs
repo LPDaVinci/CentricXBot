@@ -58,12 +58,13 @@ namespace CentricXBot.Handler
             }
 
             var argPos = 0;
-            char charPrefix = Char.Parse(prefix);
+            //HasCharPrefix instead of String
+            //char charPrefix = Char.Parse(prefix);
 
             var Date = DateTime.Now;
             if (message.Channel is IPrivateChannel) {
 
-                if (!(message.HasCharPrefix(charPrefix, ref argPos))) {
+                if (!(message.HasStringPrefix(prefix, ref argPos))) {
                     ulong channelID = Convert.ToUInt64(livealertchannel);
                     var channel = _client.GetChannel(channelID) as SocketTextChannel;
 
@@ -82,7 +83,7 @@ namespace CentricXBot.Handler
 
 
                 } else{
-                    if ((message.HasCharPrefix(charPrefix, ref argPos) && message.Content.Contains("help"))) {
+                    if ((message.HasStringPrefix(prefix, ref argPos) && message.Content.Contains("help"))) {
                         await message.Channel.SendMessageAsync("You only can run the help command in the guild not in dm");
                     } else {
                 await message.Channel.SendMessageAsync("No Commands in DM");
@@ -92,7 +93,7 @@ namespace CentricXBot.Handler
                 
             } 
 
-            if (!(message.HasMentionPrefix(_client.CurrentUser, ref argPos) || message.HasCharPrefix(charPrefix, ref argPos)))
+            if (!(message.HasMentionPrefix(_client.CurrentUser, ref argPos) || message.HasStringPrefix(prefix, ref argPos)))
             {
                 return;
             }
