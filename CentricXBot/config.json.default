@@ -1,0 +1,14 @@
+{
+  "Token": "<YOUR TOKEN>",
+  "Prefix": ";",
+  "TwitchClientID": "<TwitchClientID>",
+  "TwitchOAuth": "<TwitchOAuth Token>",
+  "LiveAlertChannel": "<LiveAlertChannel>",
+  "LiveAlertStreamer": "<LiveAlertStreamer>",
+  "LavaLinkIP": "weez-node.cf",
+  "LavaLinkPort": "2333",
+  "LavaLinkPassword": "FreeLava",
+  "BotRole": "207112270860255232",
+  "JoinToCreateChannel": "965259480281546792",
+  "TempVoiceCategory": "965240216170401862"
+}
