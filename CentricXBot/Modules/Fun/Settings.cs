@@ -24,9 +24,6 @@ namespace CentricXBot.Modules.Fun
     }
     else
     {       
-           string fileName = "config.json";
-           string jsonString = File.ReadAllText(fileName);
-        
             var settingsData = BaseConfig.GetConfig();
 
             switch (arg)
@@ -40,9 +37,6 @@ namespace CentricXBot.Modules.Fun
                 Context.Channel.SendMessageAsync($"Der Voice Channel wurde auf {arg2} geändert");
                 break;
             }
-
-            jsonString = JsonConvert.SerializeObject(settingsData);
-
              var updatedJsonString = JsonConvert.SerializeObject(settingsData, Formatting.Indented);
               File.WriteAllText("config.json", updatedJsonString);
             
