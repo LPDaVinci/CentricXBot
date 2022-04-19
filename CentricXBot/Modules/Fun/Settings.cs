@@ -2,7 +2,7 @@
 using Discord.Commands;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using CentricxBot.Functions;
+using CentricxBot.Data;
 
 namespace CentricXBot.Modules.Fun
 {

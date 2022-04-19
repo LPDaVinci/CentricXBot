@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace CentricxBot.Functions
+namespace CentricxBot.Data
 {
     class BaseConfig
     {

@@ -8,8 +8,7 @@ using Lavalink4NET;
 using Lavalink4NET.DiscordNet;
 using Lavalink4NET.Tracking;
 using Microsoft.Extensions.Logging;
-using CentricxBot.Functions;
-using Newtonsoft.Json.Linq;
+using CentricxBot.Data;
 using Microsoft.Extensions.DependencyInjection;
 
 //Name

@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
-using CentricxBot.Functions;
+using CentricxBot.Data;
 using Newtonsoft.Json.Linq;
 
 namespace CentricXBot.Handler
