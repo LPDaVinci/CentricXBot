@@ -61,14 +61,15 @@ namespace CentricXBot
 
                 services.GetRequiredService<VoiceStateHandler>();
 
-                // this is where we get the Token value from the configuration file, and start the bot
-                // Get the bot token from the Config.json file.
-               
-                var token = BaseConfig.GetConfig().token;
+               // This is the Service to check if a config.json exist if not it creates one and you need to restart the bot after configuring the file.
+                await services.GetRequiredService<GlobalData>().InitializeAsync();
+
+                //Bot Token from config.json
+                var token = BaseConfig.GetConfig().Token;
 
                 await client.LoginAsync(TokenType.Bot, token);
                 await client.StartAsync();
-                 await client.SetStatusAsync(UserStatus.Online);
+                await client.SetStatusAsync(UserStatus.Online);
                 await client.SetGameAsync("LPDaVinci auf Twitch", "https://twitch.tv/lpdavinci", ActivityType.Streaming);
 
                 _client.Ready += () => audio.InitializeAsync();
@@ -86,14 +87,13 @@ namespace CentricXBot
             }
         }
 
-
         // this method handles the ServiceCollection creation/configuration, and builds out the service provider we can call on later
         private ServiceProvider ConfigureServices()
         {
             //Get Config Parts
-            var lavalinkip = BaseConfig.GetConfig().lavalinkip;
-            var lavalinkport = BaseConfig.GetConfig().lavalinkport;
-            var lavalinkpw = BaseConfig.GetConfig().lavalinkpw;
+            var lavalinkip = BaseConfig.GetConfig().LavaLinkIP;
+            var lavalinkport = BaseConfig.GetConfig().LavaLinkPort;
+            var lavalinkpw = BaseConfig.GetConfig().LavaLinkPassword;
      
 
             var services = new ServiceCollection()
@@ -117,7 +117,7 @@ namespace CentricXBot
                     MessageCacheSize = 1000,  
                     AlwaysDownloadUsers = true,
             }))
-            
+                .AddSingleton<GlobalData>()
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<ReactionHandler>()

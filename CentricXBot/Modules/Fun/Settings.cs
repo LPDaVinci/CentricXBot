@@ -32,7 +32,7 @@ namespace CentricXBot.Modules.Fun
             switch (arg)
             {
             case "prefix":
-                settingsData.prefix = arg2;
+                settingsData.Prefix = arg2;
                 break;
             }
 

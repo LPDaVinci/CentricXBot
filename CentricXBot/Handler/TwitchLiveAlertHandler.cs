@@ -58,10 +58,10 @@ namespace CentricXBot.Handler
 
     public async Task TwitchLiveAlert()
     {   
-        var clientid = BaseConfig.GetConfig().clientid;
-        var oauth = BaseConfig.GetConfig().oauth;
-        var livealertstreamer = BaseConfig.GetConfig().livealertstreamer;
-        var livealertchannel = BaseConfig.GetConfig().livealertchannel;
+        var clientid = BaseConfig.GetConfig().TwitchClientID;
+        var oauth = BaseConfig.GetConfig().TwitchOAuth;
+        var livealertstreamer = BaseConfig.GetConfig().LiveAlertStreamer;
+        var livealertchannel = BaseConfig.GetConfig().LiveAlertChannel;
         
         
         //Create new HttpClient
