@@ -1,6 +1,7 @@
-﻿using Discord;
+﻿using CentricxBot.Data;
+using Discord;
 using Discord.Commands;
-
+using Newtonsoft.Json;
 
 namespace CentricXBot.Modules.Fun
 {
@@ -22,6 +23,14 @@ namespace CentricXBot.Modules.Fun
 
                
                 var msg = await Context.Channel.SendMessageAsync(embed: embed);
+                var messages = msg.Id;
+   
+                //Write On Embed the MessageID in a Config to use the reactionHandler or anything else that needs to store an id
+                //var settingsData = BaseConfig.GetConfig();
+                
+                //settingsData.Prefix = messages.ToString();
+                //var updatedJsonString = JsonConvert.SerializeObject(settingsData, Formatting.Indented);
+                //File.WriteAllText("config.json", updatedJsonString);
                 
                 await msg.AddReactionAsync(new Emoji("👍"));
                
