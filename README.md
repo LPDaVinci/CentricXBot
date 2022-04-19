@@ -14,6 +14,7 @@ DM as Bot
 Auto Channel Create  
 Invite Generator  
 TextChannel Create Command  
+Settings Command to change prefix and channels  
 
 ## Planned:  
 Ticket System  
