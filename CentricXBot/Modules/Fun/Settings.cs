@@ -24,10 +24,10 @@ namespace CentricXBot.Modules.Fun
     }
     else
     {       
-            string fileName = "config.json";
-            string jsonString = File.ReadAllText(fileName);
-
-            var settingsData = JsonConvert.DeserializeObject<JsonFunctions.ConfigJsonData>(jsonString);
+           string fileName = "config.json";
+           string jsonString = File.ReadAllText(fileName);
+        
+            var settingsData = JsonFunctions.GetConfig();
 
             switch (arg)
             {
@@ -38,8 +38,8 @@ namespace CentricXBot.Modules.Fun
 
             jsonString = JsonConvert.SerializeObject(settingsData);
 
-            var updatedJsonString = JsonConvert.SerializeObject(settingsData, Formatting.Indented);
-             File.WriteAllText("config.json", updatedJsonString);
+             var updatedJsonString = JsonConvert.SerializeObject(settingsData, Formatting.Indented);
+              File.WriteAllText("config.json", updatedJsonString);
             
 
         }

@@ -38,10 +38,10 @@ namespace CentricXBot.Handler
         }
         public async Task MessageReceivedAsync(SocketMessage rawMessage)
         {
+            
+            var prefix = JsonFunctions.GetConfig().prefix;
+            var livealertchannel = JsonFunctions.GetConfig().livealertchannel;
 
-            JObject config = JsonFunctions.GetConfig();
-            string prefix = config["prefix"].Value<string>();
-            string livealertchannel = config["live-alert-channel"].Value<string>();
     
 
 

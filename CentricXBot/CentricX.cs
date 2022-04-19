@@ -64,8 +64,8 @@ namespace CentricXBot
 
                 // this is where we get the Token value from the configuration file, and start the bot
                 // Get the bot token from the Config.json file.
-                JObject config = JsonFunctions.GetConfig();
-                string token = config["token"].Value<string>();
+               
+                var token = JsonFunctions.GetConfig().token;
 
                 await client.LoginAsync(TokenType.Bot, token);
                 await client.StartAsync();
@@ -92,11 +92,10 @@ namespace CentricXBot
         private ServiceProvider ConfigureServices()
         {
             //Get Config Parts
-
-            JObject config = JsonFunctions.GetConfig();
-            string lavalinkip = config["lavalink-ip"].Value<string>();
-            string lavalinkport = config["lavalink-port"].Value<string>();
-            string lavalinkpw = config["lavalink-pw"].Value<string>();
+            var lavalinkip = JsonFunctions.GetConfig().lavalinkip;
+            var lavalinkport = JsonFunctions.GetConfig().lavalinkport;
+            var lavalinkpw = JsonFunctions.GetConfig().lavalinkpw;
+     
 
             var services = new ServiceCollection()
                 .AddSingleton(new DiscordSocketClient(new DiscordSocketConfig

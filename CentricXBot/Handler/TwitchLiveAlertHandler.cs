@@ -57,12 +57,12 @@ namespace CentricXBot.Handler
     }
 
     public async Task TwitchLiveAlert()
-    {
-        JObject config = JsonFunctions.GetConfig();
-        string clientid = config["clientid"].Value<string>();
-        string oauth = config["oauth"].Value<string>();
-        string livestreamer = config["live-alert-streamer"].Value<string>();
-        string alertchannel = config["live-alert-channel"].Value<string>();
+    {   
+        var clientid = JsonFunctions.GetConfig().clientid;
+        var oauth = JsonFunctions.GetConfig().oauth;
+        var livealertstreamer = JsonFunctions.GetConfig().livealertstreamer;
+        var livealertchannel = JsonFunctions.GetConfig().livealertchannel;
+        
         
         //Create new HttpClient
         var client = new HttpClient();
@@ -70,13 +70,13 @@ namespace CentricXBot.Handler
         client.DefaultRequestHeaders.Add("Client-ID", $"{clientid}"); 
         client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", $"{oauth}");
        //Get Stream Info
-        HttpResponseMessage response = await client.GetAsync($"https://api.twitch.tv/helix/streams?user_login={livestreamer}");
+        HttpResponseMessage response = await client.GetAsync($"https://api.twitch.tv/helix/streams?user_login={livealertstreamer}");
         HttpContent responseContent = response.Content;
         string jsonString = await response.Content.ReadAsStringAsync();
         var stream = JsonConvert.DeserializeObject<StreamObject>(jsonString);
 
         //Get Profile Info just for the profile picture
-        HttpResponseMessage responseUser = await client.GetAsync($"https://api.twitch.tv/helix/users?login={livestreamer}");
+        HttpResponseMessage responseUser = await client.GetAsync($"https://api.twitch.tv/helix/users?login={livealertstreamer}");
         HttpContent responseUserContent = responseUser.Content;
         string jsonProfileString = await responseUser.Content.ReadAsStringAsync();
         var profile = JsonConvert.DeserializeObject<ProfileObject>(jsonProfileString);
@@ -100,7 +100,7 @@ namespace CentricXBot.Handler
             //Send Text Before Embed:
 
             //Send Embed to channel
-            ulong ChannelID = Convert.ToUInt64(alertchannel);
+            ulong ChannelID = Convert.ToUInt64(livealertchannel);
             var sendchannel = _client.GetChannel(ChannelID) as IMessageChannel; 
             var text = await sendchannel.SendMessageAsync($"@everyone\n:star: {stream.data[0].user_name} ist live!\n\n");
             var msg = await sendchannel.SendMessageAsync(embed: embed.Build()); 

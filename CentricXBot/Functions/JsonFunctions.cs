@@ -1,31 +1,25 @@
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
 
 namespace CentricxBot.Functions
 {
-    public static class JsonFunctions
+    class JsonFunctions
     {
-        public static JObject GetConfig()
-            {
-                // Get the config file.
-                using StreamReader configJson = new StreamReader(Directory.GetCurrentDirectory() + @"/Config.json");
-                return (JObject)JsonConvert.DeserializeObject(configJson.ReadToEnd());
-            }
-        public class ConfigJsonData
-            {
-                [JsonProperty("token")] public string token { get; set; }
-                [JsonProperty("prefix")] public string prefix { get; set; }
-                [JsonProperty("clientid")] public string clientid { get; set; }
-                [JsonProperty("oauth")] public string oauth { get; set; }
-                [JsonProperty("live-alert-streamer")] public string alertstreamer { get; set; }
-                [JsonProperty("live-alert-channel")] public string alertchannel { get; set; }
-                [JsonProperty("lavalink-pw")] public string lavalinkpw { get; set; }
-                [JsonProperty("lavalink-ip")] public string lavalinkip { get; set; }
-                [JsonProperty("lavalink-port")] public string lavalinkport { get; set; }
-                [JsonProperty("botrole")] public string botrole { get; set; }
-                [JsonProperty("autocreatechannelid")] public string autocreatechannelid { get; set; }
-                [JsonProperty("autocreatecategoryid")] public string autocreatecategoryid { get; set; }
-            }
-    }
+    public string token { get; set; }
+    public string prefix { get; set; }
+    public string clientid { get; set; }
+    public string oauth { get; set; }
+    public string livealertchannel { get; set; }
+    public string livealertstreamer { get; set; }
+    public string lavalinkpw { get; set; }
+    public string lavalinkip { get; set; }
+    public string lavalinkport { get; set; }
+    public string botrole { get; set; }
+    public string autocreatechannelid { get; set; }
+    public string autocreatecategoryid { get; set; }
+
+    public static JsonFunctions GetConfig()
+        {
+            return JsonSerializer.Deserialize<JsonFunctions>(File.ReadAllText("config.json"));
+        }
+}
 } 

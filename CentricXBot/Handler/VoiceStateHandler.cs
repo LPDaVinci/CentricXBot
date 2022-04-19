@@ -25,10 +25,9 @@ namespace CentricXBot.Handler
         }
         public async Task HandleVoiceState(SocketUser user, SocketVoiceState before, SocketVoiceState after)
         {
-                JObject config = JsonFunctions.GetConfig();
-                string autocreatechannelid = config["autocreatechannelid"].Value<string>();
-                string autocreatecatid = config["autocreatecategoryid"].Value<string>();
-
+                var autocreatechannelid = JsonFunctions.GetConfig().autocreatechannelid;
+                var autocreatecatid = JsonFunctions.GetConfig().autocreatecategoryid;
+               
                 Console.WriteLine($"VoiceStateUpdate: {user} - {before.VoiceChannel?.Name ?? "null"} -> {after.VoiceChannel?.Name ?? "null"}");
                 if (user is SocketGuildUser socketGuildUser)
                 {
