@@ -69,6 +69,7 @@ namespace CentricXBot
 
                 await client.LoginAsync(TokenType.Bot, token);
                 await client.StartAsync();
+                 await client.SetStatusAsync(UserStatus.Online);
                 await client.SetGameAsync("LPDaVinci auf Twitch", "https://twitch.tv/lpdavinci", ActivityType.Streaming);
 
                 _client.Ready += () => audio.InitializeAsync();

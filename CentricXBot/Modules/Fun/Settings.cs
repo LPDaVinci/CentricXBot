@@ -2,30 +2,11 @@
 using Discord.Commands;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-
+using CentricxBot.Functions;
 
 namespace CentricXBot.Modules.Fun
 {
-         public class ConfigJsonData
-    {
-        [JsonProperty("token")] public string token { get; set; }
-        [JsonProperty("prefix")] public string prefix { get; set; }
-         [JsonProperty("clientid")] public string clientid { get; set; }
-          [JsonProperty("oauth")] public string oauth { get; set; }
-           [JsonProperty("live-alert-streamer")] public string alertstreamer { get; set; }
-            [JsonProperty("live-alert-channel")] public string alertchannel { get; set; }
-             [JsonProperty("lavalink-pw")] public string lavalinkpw { get; set; }
-              [JsonProperty("lavalink-ip")] public string lavalinkip { get; set; }
-               [JsonProperty("lavalink-port")] public string lavalinkport { get; set; }
-        [JsonProperty("botrole")] public string botrole { get; set; }
-[JsonProperty("autocreatechannelid")] public string autocreatechannelid { get; set; }
-[JsonProperty("autocreatecategoryid")] public string autocreatecategoryid { get; set; }
-    }
-    public class ConfigObject
-    {
-        public List<ConfigJsonData> data { get; set; }
-    }   
-    // for commands to be available, and have the Context passed to them, we must inherit ModuleBase
+        
         public class Settings : ModuleBase<SocketCommandContext>
     {
         private readonly IConfiguration config;
@@ -43,11 +24,10 @@ namespace CentricXBot.Modules.Fun
     }
     else
     {       
-          
             string fileName = "config.json";
             string jsonString = File.ReadAllText(fileName);
 
-            var settingsData = JsonConvert.DeserializeObject<ConfigJsonData>(jsonString);
+            var settingsData = JsonConvert.DeserializeObject<JsonFunctions.ConfigJsonData>(jsonString);
 
             switch (arg)
             {
