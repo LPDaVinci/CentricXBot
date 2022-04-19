@@ -5,6 +5,8 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
+using CentricxBot.Functions;
 
 namespace CentricXBot.Handler
 
@@ -12,7 +14,6 @@ namespace CentricXBot.Handler
     public class CommandHandler
     {
         // setup fields to be set later in the constructor
-        private readonly IConfiguration _config;
         private readonly CommandService _commands;
         private readonly DiscordSocketClient _client;
         private readonly IServiceProvider _services;
@@ -22,12 +23,10 @@ namespace CentricXBot.Handler
         {
             // juice up the fields with these services
             // since we passed the services in, we can use GetRequiredService to pass them into the fields set earlier
-            _config = services.GetRequiredService<IConfiguration>();
             _commands = services.GetRequiredService<CommandService>();
             _client = services.GetRequiredService<DiscordSocketClient>();
             _logger = services.GetRequiredService<ILogger<CommandHandler>>();
             _services = services;
-
             _commands.CommandExecuted += CommandExecutedAsync;
             _client.MessageReceived += MessageReceivedAsync;
 
@@ -40,7 +39,10 @@ namespace CentricXBot.Handler
         public async Task MessageReceivedAsync(SocketMessage rawMessage)
         {
 
-            
+            JObject config = JsonFunctions.GetConfig();
+            string prefix = config["prefix"].Value<string>();
+            string livealertchannel = config["live-alert-channel"].Value<string>();
+    
 
 
             
@@ -56,13 +58,13 @@ namespace CentricXBot.Handler
             }
 
             var argPos = 0;
-            char prefix = Char.Parse(_config["prefix"]);
+            char charPrefix = Char.Parse(prefix);
 
             var Date = DateTime.Now;
             if (message.Channel is IPrivateChannel) {
 
-                if (!(message.HasCharPrefix(prefix, ref argPos))) {
-                    ulong channelID = Convert.ToUInt64(_config["live-alert-channel"]);
+                if (!(message.HasCharPrefix(charPrefix, ref argPos))) {
+                    ulong channelID = Convert.ToUInt64(livealertchannel);
                     var channel = _client.GetChannel(channelID) as SocketTextChannel;
 
             var exampleFooter = new EmbedFooterBuilder()
@@ -80,7 +82,7 @@ namespace CentricXBot.Handler
 
 
                 } else{
-                    if ((message.HasCharPrefix(prefix, ref argPos) && message.Content.Contains("help"))) {
+                    if ((message.HasCharPrefix(charPrefix, ref argPos) && message.Content.Contains("help"))) {
                         await message.Channel.SendMessageAsync("You only can run the help command in the guild not in dm");
                     } else {
                 await message.Channel.SendMessageAsync("No Commands in DM");
@@ -90,7 +92,7 @@ namespace CentricXBot.Handler
                 
             } 
 
-            if (!(message.HasMentionPrefix(_client.CurrentUser, ref argPos) || message.HasCharPrefix(prefix, ref argPos)))
+            if (!(message.HasMentionPrefix(_client.CurrentUser, ref argPos) || message.HasCharPrefix(charPrefix, ref argPos)))
             {
                 return;
             }

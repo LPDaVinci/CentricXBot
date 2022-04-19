@@ -1,8 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using CentricXBot.Handler;
 using CentricXBot.Services;
 using Serilog;
@@ -10,6 +8,9 @@ using Lavalink4NET;
 using Lavalink4NET.DiscordNet;
 using Lavalink4NET.Tracking;
 using Microsoft.Extensions.Logging;
+using CentricxBot.Functions;
+using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.DependencyInjection;
 
 //Name
 namespace CentricXBot
@@ -18,7 +19,6 @@ namespace CentricXBot
     class CentricX
     {
         // setup our fields we assign later
-        private readonly IConfiguration _config;
         private DiscordSocketClient _client;
         private static string _logLevel;
 
@@ -40,16 +40,6 @@ namespace CentricXBot
         }
     
 
-        public CentricX()
-        {
-            //Create the configuration
-            var _builder = new ConfigurationBuilder()
-                .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile(path: "config.json");
-
-            // build the configuration and assign to _config          
-            _config = _builder.Build();
-        }
         public async Task MainAsync()
         {
             // call ConfigureServices to create the ServiceCollection/Provider for passing around the services
@@ -60,7 +50,7 @@ namespace CentricXBot
                 var client = services.GetRequiredService<DiscordSocketClient>();
                 _client = client;
 
-                var audio = services.GetRequiredService<IAudioService>();
+               var audio = services.GetRequiredService<IAudioService>();
 
                 
                 // setup logging and the ready event
@@ -73,13 +63,17 @@ namespace CentricXBot
                 services.GetRequiredService<VoiceStateHandler>();
 
                 // this is where we get the Token value from the configuration file, and start the bot
-                await client.LoginAsync(TokenType.Bot, _config["token"]);
+                // Get the bot token from the Config.json file.
+                JObject config = JsonFunctions.GetConfig();
+                string token = config["token"].Value<string>();
+
+                await client.LoginAsync(TokenType.Bot, token);
                 await client.StartAsync();
                 await client.SetGameAsync("LPDaVinci auf Twitch", "https://twitch.tv/lpdavinci", ActivityType.Streaming);
 
                 _client.Ready += () => audio.InitializeAsync();
 
-                services.GetRequiredService<InactivityTrackingService>().BeginTracking();
+                 services.GetRequiredService<InactivityTrackingService>().BeginTracking();
 
                 // we get the CommandHandler class here and call the InitializeAsync method to start things up for the CommandHandler service
                 await services.GetRequiredService<CommandHandler>().InitializeAsync();
@@ -88,7 +82,7 @@ namespace CentricXBot
 
                  services.GetRequiredService<ButtonHandler>();
 
-                   await Task.Delay(-1);
+                await Task.Delay(-1);
             }
         }
 
@@ -96,12 +90,14 @@ namespace CentricXBot
         // this method handles the ServiceCollection creation/configuration, and builds out the service provider we can call on later
         private ServiceProvider ConfigureServices()
         {
-            // this returns a ServiceProvider that is used later to call for those services
-            // we can add types we have access to here, hence adding the new using statement:
-            // using csharpi.Services;
-            // the config we build is also added, which comes in handy for setting the command prefix!
+            //Get Config Parts
+
+            JObject config = JsonFunctions.GetConfig();
+            string lavalinkip = config["lavalink-ip"].Value<string>();
+            string lavalinkport = config["lavalink-port"].Value<string>();
+            string lavalinkpw = config["lavalink-pw"].Value<string>();
+
             var services = new ServiceCollection()
-                .AddSingleton(_config)
                 .AddSingleton(new DiscordSocketClient(new DiscordSocketConfig
             {                                       // Add discord to the collection
                     GatewayIntents = 
@@ -130,18 +126,19 @@ namespace CentricXBot
                 .AddSingleton<TwitchLiveAlertHandler>()
                 .AddSingleton<GuildJoinHandler>()
                 .AddSingleton<VoiceStateHandler>()
+
                 //Lavalink
-                .AddSingleton<IAudioService, LavalinkNode>()	
-	            .AddSingleton<IDiscordClientWrapper, DiscordClientWrapper>()
-                .AddSingleton(new LavalinkNodeOptions 
-                {
-                    RestUri = $"http://{_config["lavalink-ip"]}:{_config["lavalink-port"]}",
-	                WebSocketUri = $"ws://{_config["lavalink-ip"]}:{_config["lavalink-port"]}",
-                    Password = _config["lavalink-pw"]
-                }
-                )
-                .AddSingleton<InactivityTrackingOptions>()
-                .AddSingleton<InactivityTrackingService>()
+                 .AddSingleton<IAudioService, LavalinkNode>()	
+	             .AddSingleton<IDiscordClientWrapper, DiscordClientWrapper>()
+                 .AddSingleton(new LavalinkNodeOptions 
+                 {
+                     RestUri = $"http://{lavalinkip}:{lavalinkport}",
+	                 WebSocketUri = $"ws://{lavalinkip}:{lavalinkport}",
+                     Password = lavalinkpw
+                 }
+                 )
+                 .AddSingleton<InactivityTrackingOptions>()
+                 .AddSingleton<InactivityTrackingService>()
 
                 //Logging
                 .AddSingleton<LoggingService>()

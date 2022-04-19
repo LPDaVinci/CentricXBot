@@ -1,8 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
-using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
+using CentricxBot.Functions;
+using Newtonsoft.Json.Linq;
 
 namespace CentricXBot.Handler
 {
@@ -10,7 +10,6 @@ namespace CentricXBot.Handler
     {
         private readonly DiscordSocketClient _client;
         private readonly Microsoft.Extensions.Logging.ILogger _logger;
-        private readonly IConfiguration _config;
 
         public GuildJoinHandler(IServiceProvider services)
         {
@@ -18,7 +17,6 @@ namespace CentricXBot.Handler
             // since we passed the services in, we can use GetRequiredService to pass them into the fields set earlier
             _client = services.GetRequiredService<DiscordSocketClient>();
             _logger = services.GetRequiredService<ILogger<CommandHandler>>();
-            _config = services.GetRequiredService<IConfiguration>();
             // take action when we receive a message (so we can process it, and see if it is a valid command)
 
             _client.UserJoined += HandleUserJoinedAsync;
@@ -26,9 +24,12 @@ namespace CentricXBot.Handler
         }
         public async Task HandleUserJoinedAsync(SocketGuildUser user)
         {
+            JObject config = JsonFunctions.GetConfig();
+            string botrole = config["botrole"].Value<string>();
+            
             if (user.IsBot)
             {
-                await user.AddRoleAsync(Convert.ToUInt64($"{_config["botrole"]}"));
+                await user.AddRoleAsync(Convert.ToUInt64($"{botrole}"));
             }
             var channel = _client.GetChannel(958338678286065706) as SocketTextChannel; // Gets the channel to send the message in
             await channel.SendMessageAsync($"Welcome {user.Mention} to {channel.Guild.Name}"); //Welcomes the new user

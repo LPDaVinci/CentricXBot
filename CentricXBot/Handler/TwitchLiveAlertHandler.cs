@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Discord;
 using Discord.WebSocket;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using CentricxBot.Functions;
 
 namespace CentricXBot.Handler
 {
@@ -10,7 +11,6 @@ namespace CentricXBot.Handler
     {
        
     // setup fields to be set later in the constructor
-        private readonly IConfiguration _config;
         private readonly DiscordSocketClient _client;
         private readonly IServiceProvider _services;
 
@@ -24,7 +24,6 @@ namespace CentricXBot.Handler
 
             // juice up the fields with these services
             // since we passed the services in, we can use GetRequiredService to pass them into the fields set earlier
-            _config = services.GetRequiredService<IConfiguration>();
             _client = services.GetRequiredService<DiscordSocketClient>();
             _services = services;
 
@@ -59,20 +58,25 @@ namespace CentricXBot.Handler
 
     public async Task TwitchLiveAlert()
     {
+        JObject config = JsonFunctions.GetConfig();
+        string clientid = config["clientid"].Value<string>();
+        string oauth = config["oauth"].Value<string>();
+        string livestreamer = config["live-alert-streamer"].Value<string>();
+        string alertchannel = config["live-alert-channel"].Value<string>();
         
         //Create new HttpClient
         var client = new HttpClient();
         //Send client-id and oauth token to Twitch API
-        client.DefaultRequestHeaders.Add("Client-ID", $"{_config["clientid"]}"); 
-        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", $"{_config["oauth"]}");
+        client.DefaultRequestHeaders.Add("Client-ID", $"{clientid}"); 
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", $"{oauth}");
        //Get Stream Info
-        HttpResponseMessage response = await client.GetAsync($"https://api.twitch.tv/helix/streams?user_login={_config["live-alert-streamer"]}");
+        HttpResponseMessage response = await client.GetAsync($"https://api.twitch.tv/helix/streams?user_login={livestreamer}");
         HttpContent responseContent = response.Content;
         string jsonString = await response.Content.ReadAsStringAsync();
         var stream = JsonConvert.DeserializeObject<StreamObject>(jsonString);
 
         //Get Profile Info just for the profile picture
-        HttpResponseMessage responseUser = await client.GetAsync($"https://api.twitch.tv/helix/users?login={_config["live-alert-streamer"]}");
+        HttpResponseMessage responseUser = await client.GetAsync($"https://api.twitch.tv/helix/users?login={livestreamer}");
         HttpContent responseUserContent = responseUser.Content;
         string jsonProfileString = await responseUser.Content.ReadAsStringAsync();
         var profile = JsonConvert.DeserializeObject<ProfileObject>(jsonProfileString);
@@ -96,7 +100,7 @@ namespace CentricXBot.Handler
             //Send Text Before Embed:
 
             //Send Embed to channel
-            ulong ChannelID = Convert.ToUInt64(_config["live-alert-channel"]);
+            ulong ChannelID = Convert.ToUInt64(alertchannel);
             var sendchannel = _client.GetChannel(ChannelID) as IMessageChannel; 
             var text = await sendchannel.SendMessageAsync($"@everyone\n:star: {stream.data[0].user_name} ist live!\n\n");
             var msg = await sendchannel.SendMessageAsync(embed: embed.Build()); 
