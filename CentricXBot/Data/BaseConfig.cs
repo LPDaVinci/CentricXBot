@@ -17,9 +17,9 @@ namespace CentricxBot.Data
     [JsonProperty("JoinToCreateChannel")] public string JoinToCreateChannel { get; set; }
     [JsonProperty("TempVoiceCategory")] public string TempVoiceCategory { get; set; }
 
-    public static BaseConfig GetConfig()
-        {
-            return JsonConvert.DeserializeObject<BaseConfig>(File.ReadAllText("config.json"));
-        }
-}
+        public static BaseConfig GetConfig()
+            {
+                return JsonConvert.DeserializeObject<BaseConfig>(File.ReadAllText("config.json"));
+            }
+    }
 } 
