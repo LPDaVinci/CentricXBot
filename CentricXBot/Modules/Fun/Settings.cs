@@ -27,7 +27,7 @@ namespace CentricXBot.Modules.Fun
            string fileName = "config.json";
            string jsonString = File.ReadAllText(fileName);
         
-            var settingsData = JsonFunctions.GetConfig();
+            var settingsData = BaseConfig.GetConfig();
 
             switch (arg)
             {

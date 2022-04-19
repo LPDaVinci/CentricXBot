@@ -24,7 +24,7 @@ namespace CentricXBot.Handler
         }
         public async Task HandleUserJoinedAsync(SocketGuildUser user)
         {
-            var botrole = JsonFunctions.GetConfig().botrole;
+            var botrole = BaseConfig.GetConfig().botrole;
    
             
             if (user.IsBot)
