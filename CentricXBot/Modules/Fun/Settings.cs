@@ -33,6 +33,11 @@ namespace CentricXBot.Modules.Fun
             {
             case "prefix":
                 settingsData.Prefix = arg2;
+                Context.Channel.SendMessageAsync($"Der Prefix wurde auf {arg2} geändert");
+                break;
+            case "vc":
+                settingsData.JoinToCreateChannel = arg2;
+                Context.Channel.SendMessageAsync($"Der Voice Channel wurde auf {arg2} geändert");
                 break;
             }
 
