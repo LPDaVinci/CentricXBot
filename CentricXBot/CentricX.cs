@@ -62,7 +62,6 @@ namespace CentricXBot
                 services.GetRequiredService<VoiceStateHandler>();
 
                // This is the Service to check if a config.json exist if not it creates one and you need to restart the bot after configuring the file.
-                await services.GetRequiredService<GlobalData>().InitializeAsync();
 
                 //Bot Token from config.json
                 var token = BaseConfig.GetConfig().Token;
@@ -117,7 +116,6 @@ namespace CentricXBot
                     MessageCacheSize = 1000,  
                     AlwaysDownloadUsers = true,
             }))
-                .AddSingleton<GlobalData>()
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<ReactionHandler>()
