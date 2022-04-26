@@ -10,6 +10,7 @@ using Lavalink4NET.Tracking;
 using Microsoft.Extensions.Logging;
 using CentricxBot.Data;
 using Microsoft.Extensions.DependencyInjection;
+using Fergun.Interactive;
 
 //Name
 namespace CentricXBot
@@ -123,6 +124,8 @@ namespace CentricXBot
                 .AddSingleton<TwitchLiveAlertHandler>()
                 .AddSingleton<GuildJoinHandler>()
                 .AddSingleton<VoiceStateHandler>()
+                .AddSingleton(new InteractiveConfig { DefaultTimeout = TimeSpan.FromMinutes(5) }) // Optional config
+                .AddSingleton<InteractiveService>()
 
                 //Lavalink
                  .AddSingleton<IAudioService, LavalinkNode>()	
