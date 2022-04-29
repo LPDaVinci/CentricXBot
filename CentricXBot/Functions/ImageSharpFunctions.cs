@@ -9,7 +9,7 @@ using SixLabors.ImageSharp.Processing;
 
 namespace CentricXBot.Functions
 {
-    static class ImageFnc
+    static class ImageSharpFunctions
     {
 
         // Implements a full image mutating pipeline operating on IImageProcessingContext
