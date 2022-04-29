@@ -20,17 +20,9 @@ namespace CentricXBot.Modules.Fun
             HttpClient httpClient = new HttpClient(); 
             HttpResponseMessage response = null;
             SixLabors.ImageSharp.Image<Rgba32> image = null; 
-            response = await httpClient.GetAsync(Context.User.GetAvatarUrl()); /*sets the response to the users avatar*/
+            response = await httpClient.GetAsync(Context.Client.CurrentUser.GetAvatarUrl()); /*sets the response to the users avatar*/
             Stream inputStream = await response.Content.ReadAsStreamAsync(); /*creates a inputStream variable and reads the url*/
             image = SixLabors.ImageSharp.Image.Load<Rgba32>(inputStream); /*Loads the image to the ImageSharp image we created earlier*/
-            inputStream.Dispose();
-            Stream outputStream = new MemoryStream();
-            image.SaveAsPng(outputStream);
-            outputStream.Position = 0;
-            var file = File.Create("test.png");
-            await outputStream.CopyToAsync(file);
-            file.Dispose();
-                // as generate returns a new IImage make sure we dispose of it
                 using (SixLabors.ImageSharp.Image destRound = image.Clone(x => x.ConvertToAvatar(new Size(200, 200), 100)))
                 {
                     destRound.Save("test.png");
