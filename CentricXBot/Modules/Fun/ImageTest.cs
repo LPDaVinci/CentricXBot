@@ -1,14 +1,8 @@
-﻿using System.Net.Http;
-using CentricxBot.Data;
-using Discord;
-using Discord.Commands;
+﻿using Discord.Commands;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Drawing;
-using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using CentricXBot.Functions;
-using System.Numerics;
 
 namespace CentricXBot.Modules.Fun
 {
@@ -22,16 +16,13 @@ namespace CentricXBot.Modules.Fun
             SixLabors.ImageSharp.Image<Rgba32> image = null; 
             response = await httpClient.GetAsync(Context.Client.CurrentUser.GetAvatarUrl()); /*sets the response to the users avatar*/
             Stream inputStream = await response.Content.ReadAsStreamAsync(); /*creates a inputStream variable and reads the url*/
+    
             image = SixLabors.ImageSharp.Image.Load<Rgba32>(inputStream); /*Loads the image to the ImageSharp image we created earlier*/
-                using (SixLabors.ImageSharp.Image destRound = image.Clone(x => x.ConvertToAvatar(new Size(200, 200), 100)))
+            var finimg = ImageSharpFunctions.CreateRoundedImage(image);  
+            using (MemoryStream imgStream = new MemoryStream(finimg))
                 {
-                    destRound.Save("test.png");
-                }
-
-
-            await Context.Channel.SendFileAsync($"test.png");
-            File.Delete("test.png");
-
+                    await Context.Channel.SendFileAsync(imgStream, "test.png");
+                } 
         }
     }
     

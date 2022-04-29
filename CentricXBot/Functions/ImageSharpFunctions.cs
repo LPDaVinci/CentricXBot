@@ -9,7 +9,7 @@ using SixLabors.ImageSharp.Processing;
 
 namespace CentricXBot.Functions
 {
-    static class ImageSharpFunctions
+    public static class ImageSharpFunctions
     {
 
         // Implements a full image mutating pipeline operating on IImageProcessingContext
@@ -66,5 +66,21 @@ namespace CentricXBot.Functions
 
             return new PathCollection(cornerTopLeft, cornerBottomLeft, cornerTopRight, cornerBottomRight);
         }
+
+                public static byte[] CreateRoundedImage(SixLabors.ImageSharp.Image myImage)
+            {
+                    SixLabors.ImageSharp.Image destRound = myImage.Clone(x => x.ConvertToAvatar(new Size(200, 200), 100));
+                    
+                    using (MemoryStream stream = new MemoryStream())
+                    {                                                   
+                        destRound.Save(stream, new SixLabors.ImageSharp.Formats.Png.PngEncoder());
+                        stream.Seek(0, SeekOrigin.Begin);
+                        destRound.Dispose();    
+                                                 
+                        return stream.ToArray();       
+                    }
+            }
+
+
     }
 }

@@ -2,7 +2,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using CentricxBot.Data;
-using Newtonsoft.Json.Linq;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using CentricXBot.Functions;
+
 
 namespace CentricXBot.Handler
 {
@@ -29,6 +33,20 @@ namespace CentricXBot.Handler
                     var channel = _client.GetChannel(958338678286065706) as SocketTextChannel; // Gets the channel to send the message in
                     await channel.SendMessageAsync($"Welcome {user.Mention} to {channel.Guild.Name}"); //Welcomes the new user
                     _logger.LogInformation($"User [{user.Mention}] ist dem Server beigetreten.");
+
+                    HttpClient httpClient = new HttpClient(); 
+                    HttpResponseMessage response = null;
+                    SixLabors.ImageSharp.Image<Rgba32> image = null; 
+                    response = await httpClient.GetAsync(user.GetAvatarUrl()); /*sets the response to the users avatar*/
+                    Stream inputStream = await response.Content.ReadAsStreamAsync(); /*creates a inputStream variable and reads the url*/
+    
+                    image = SixLabors.ImageSharp.Image.Load<Rgba32>(inputStream); /*Loads the image to the ImageSharp image we created earlier*/
+                    var finimg = ImageSharpFunctions.CreateRoundedImage(image);  
+                    using (System.IO.MemoryStream imgStream = new System.IO.MemoryStream(finimg))
+                    {
+                        await channel.SendFileAsync(imgStream, "anyImageName.png", "", false);
+                    } 
+
             }
                 public async Task HandleUserLeftAsync(SocketGuild guild, SocketUser user)
                 {
