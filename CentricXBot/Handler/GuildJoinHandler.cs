@@ -41,7 +41,7 @@ namespace CentricXBot.Handler
                     Stream inputStream = await response.Content.ReadAsStreamAsync(); /*creates a inputStream variable and reads the url*/
     
                     image = SixLabors.ImageSharp.Image.Load<Rgba32>(inputStream); /*Loads the image to the ImageSharp image we created earlier*/
-                    var finimg = ImageSharpFunctions.CreateRoundedImage(image);  
+                    var finimg = ImageSharpFunctions.CreateRoundedImage(image, user.DisplayName);  
                     using (System.IO.MemoryStream imgStream = new System.IO.MemoryStream(finimg))
                     {
                         await channel.SendFileAsync(imgStream, "anyImageName.png", "", false);
