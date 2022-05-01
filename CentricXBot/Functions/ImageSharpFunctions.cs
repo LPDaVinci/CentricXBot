@@ -1,6 +1,8 @@
 // Copyright (c) Six Labors and contributors.
 // Licensed under the Apache License, Version 2.0.
 
+using System;
+using System.Numerics;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing;
@@ -68,21 +70,34 @@ namespace CentricXBot.Functions
             return new PathCollection(cornerTopLeft, cornerBottomLeft, cornerTopRight, cornerBottomRight);
         }
 
-                public static byte[] CreateRoundedImage(SixLabors.ImageSharp.Image myImage, string username)
+                public static byte[] CreateRoundedImage(SixLabors.ImageSharp.Image myImage, string username, int count)
             {
                 FontCollection collection = new();
                 FontFamily family = collection.Add("fonts/Rubik-Black.ttf");
-                Font font = family.CreateFont(12, FontStyle.Italic);
+                Font font = family.CreateFont(16, FontStyle.Italic);
 
-                string yourText = $"{username}";
-                SixLabors.ImageSharp.Image destRound = myImage.Clone(x => x.ConvertToAvatar(new Size(200, 200), 100));
-                    
+                int bgWidth = 450;
+                int bgHeight = 200;
+
+                string JoinedMember = $"{username} joined the Server.";
+                string CountMember = $"Member #{count}";
+
+                SixLabors.ImageSharp.Image background = new Image<Rgba32>(bgWidth, bgHeight, Color.Black);
+                SixLabors.ImageSharp.Image avatar = myImage.Clone(x => x.ConvertToAvatar(new Size(200, 200), 100));
+                Vector2 center = new Vector2(avatar.Width/2 - 10, background.Height/2 + 25); //center horizontally, 10px down 
+                Vector2 center2 = new Vector2(background.Width/2 - 50, background.Height/2 + 50); //center horizontally, 10px down 
+
+
                     using (MemoryStream stream = new MemoryStream())
                     {                   
-                        destRound.Mutate(x=> x.DrawText(yourText, font, Color.Black, new PointF(10, 10)));                         
-                        destRound.Save(stream, new SixLabors.ImageSharp.Formats.Png.PngEncoder());
+                        avatar.Mutate(x => x.Resize(100, 100));
+                        background.Mutate(x => x.DrawImage(avatar, new Point(((background.Width - avatar.Width) / 2), ((background.Height-avatar.Height) / 6)), opacity: 1.0f));
+                        background.Mutate(x=> x.DrawText(JoinedMember, font, Color.White, center));
+                        background.Mutate(x=> x.DrawText(CountMember, font, Color.White, center2));
+                                              
+                        background.Save(stream, new SixLabors.ImageSharp.Formats.Png.PngEncoder());
                         stream.Seek(0, SeekOrigin.Begin);
-                        destRound.Dispose();    
+                        background.Dispose();    
                                                  
                         return stream.ToArray();       
                     }

@@ -32,7 +32,7 @@ namespace CentricXBot.Handler
                 }
                     var channel = _client.GetChannel(958338678286065706) as SocketTextChannel; // Gets the channel to send the message in
 
-                    var memberCount = user.Guild.MemberCount;
+                    
 
                     await channel.SendMessageAsync($"Welcome {user.Mention} to {channel.Guild.Name}"); //Welcomes the new user
                     _logger.LogInformation($"User [{user.Mention}] ist dem Server beigetreten.");
@@ -44,11 +44,10 @@ namespace CentricXBot.Handler
                     Stream inputStream = await response.Content.ReadAsStreamAsync(); /*creates a inputStream variable and reads the url*/
     
                     image = SixLabors.ImageSharp.Image.Load<Rgba32>(inputStream); /*Loads the image to the ImageSharp image we created earlier*/
-                    var finimg = ImageSharpFunctions.CreateRoundedImage(image, user.DisplayName);  
+                    var finimg = ImageSharpFunctions.CreateRoundedImage(image, user.Nickname +"#"+ user.Discriminator, user.Guild.MemberCount );  
                     using (System.IO.MemoryStream imgStream = new System.IO.MemoryStream(finimg))
                     {
                         await channel.SendFileAsync(imgStream, "anyImageName.png", "", false);
-                        await channel.SendMessageAsync($"{memberCount}");
 
                     } 
 
