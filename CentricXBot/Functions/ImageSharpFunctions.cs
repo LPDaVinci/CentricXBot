@@ -14,6 +14,14 @@ namespace CentricXBot.Functions
 {
     public static class ImageSharpFunctions
     {
+        private static Font _font;
+
+        static ImageSharpFunctions()
+    {
+        FontCollection collection = new();
+        FontFamily family = collection.Add("fonts/Rubik-Black.ttf");
+        _font = family.CreateFont(16, FontStyle.Italic);
+    }
 
         // Implements a full image mutating pipeline operating on IImageProcessingContext
         public static IImageProcessingContext ConvertToAvatar(this IImageProcessingContext processingContext, Size size, float cornerRadius)
@@ -72,9 +80,6 @@ namespace CentricXBot.Functions
 
                 public static byte[] CreateRoundedImage(SixLabors.ImageSharp.Image myImage, string username, int count)
             {
-                FontCollection collection = new();
-                FontFamily family = collection.Add("fonts/Rubik-Black.ttf");
-                Font font = family.CreateFont(16, FontStyle.Italic);
 
                 int bgWidth = 450;
                 int bgHeight = 200;
@@ -92,8 +97,8 @@ namespace CentricXBot.Functions
                     {                   
                         avatar.Mutate(x => x.Resize(100, 100));
                         background.Mutate(x => x.DrawImage(avatar, new Point(((background.Width - avatar.Width) / 2), ((background.Height-avatar.Height) / 6)), opacity: 1.0f));
-                        background.Mutate(x=> x.DrawText(JoinedMember, font, Color.White, center));
-                        background.Mutate(x=> x.DrawText(CountMember, font, Color.White, center2));
+                        background.Mutate(x=> x.DrawText(JoinedMember, _font, Color.White, center));
+                        background.Mutate(x=> x.DrawText(CountMember, _font, Color.White, center2));
                                               
                         background.Save(stream, new SixLabors.ImageSharp.Formats.Png.PngEncoder());
                         stream.Seek(0, SeekOrigin.Begin);
