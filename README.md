@@ -15,13 +15,13 @@ Auto Channel Create
 Invite Generator  
 TextChannel Create Command  
 Settings Command to change prefix and channels  
+Slash Commands(Interaction framework is added)  
+Youtube Upload Notify(Early Code)  
 
 ## Planned:  
 Ticket System  
 Twitter Alert  
-Youtube Upload Notify    
-Slash Commands  
-Member Counter  
+Member Counter(Easy to integrate)  
 
 ## Installation:
 Rename config.json.default to config.json and add your Token in this file.  
