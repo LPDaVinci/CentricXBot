@@ -1,5 +1,6 @@
 {
   "Token": "<YOUR TOKEN>",
+  "GuildID": "<YOUR GUILDID>",
   "Prefix": ";",
   "TwitchClientID": "<TwitchClientID>",
   "TwitchOAuth": "<TwitchOAuth Token>",

@@ -93,8 +93,10 @@ namespace CentricXBot
         }
         private async Task ReadyAsync()
         {
+           var guildid = BaseConfig.GetConfig().GuildID;
+
             await _audioService.InitializeAsync();
-            await _icommands.RegisterCommandsToGuildAsync(205388858265698304);
+            await _icommands.RegisterCommandsToGuildAsync(guildid);
         }
 
 

@@ -5,6 +5,7 @@ namespace CentricxBot.Data
     public class BaseConfig
     {
     [JsonProperty("Token")] public string Token { get; set; }
+    [JsonProperty("GuildID")] public ulong GuildID { get; set; }
     [JsonProperty("Prefix")] public string Prefix { get; set; }
     [JsonProperty("TwitchClientID")] public string TwitchClientID { get; set; }
     [JsonProperty("TwitchOAuth")] public string TwitchOAuth { get; set; }
