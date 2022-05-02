@@ -78,7 +78,7 @@ namespace CentricXBot.Functions
             return new PathCollection(cornerTopLeft, cornerBottomLeft, cornerTopRight, cornerBottomRight);
         }
 
-                public static byte[] CreateRoundedImage(SixLabors.ImageSharp.Image myImage, string username, int count)
+                public static byte[] CreateWelcomeImage(SixLabors.ImageSharp.Image myImage, string username, int count)
             {
 
                 int bgWidth = 450;

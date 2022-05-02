@@ -11,17 +11,18 @@ using Microsoft.Extensions.Logging;
 using CentricxBot.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Fergun.Interactive;
+using Discord.Interactions;
 
 //Name
 namespace CentricXBot
 {
-
     class CentricX
     {
         // setup our fields we assign later
         private DiscordSocketClient _client;
+        private InteractionService _icommands;
+        private IAudioService _audioService;
         private static string _logLevel;
-
 
         static void Main(string[] args = null)
         {
@@ -34,12 +35,9 @@ namespace CentricXBot
                 .WriteTo.Console()
                 .CreateLogger();
 
-
              new CentricX().MainAsync().GetAwaiter().GetResult();
             
         }
-    
-
         public async Task MainAsync()
         {
             // call ConfigureServices to create the ServiceCollection/Provider for passing around the services
@@ -48,44 +46,58 @@ namespace CentricXBot
                 // get the client and assign to client 
                 // you get the services via GetRequiredService<T>
                 var client = services.GetRequiredService<DiscordSocketClient>();
+                var icommands = services.GetRequiredService<InteractionService>();
+                var audioService = services.GetRequiredService<IAudioService>();
                 _client = client;
-
-               var audio = services.GetRequiredService<IAudioService>();
-
+                _icommands = icommands;
+                _audioService = audioService;
                 
                 // setup logging and the ready event
-                services.GetRequiredService<LoggingService>();
+                client.Ready += ReadyAsync;
 
-                services.GetRequiredService<TwitchLiveAlertHandler>();
-
-                services.GetRequiredService<GuildJoinHandler>();
-
-                services.GetRequiredService<VoiceStateHandler>();
-
-               // This is the Service to check if a config.json exist if not it creates one and you need to restart the bot after configuring the file.
+                // Token Stuff
 
                 //Bot Token from config.json
                 var token = BaseConfig.GetConfig().Token;
 
+                //StartBot
                 await client.LoginAsync(TokenType.Bot, token);
                 await client.StartAsync();
                 await client.SetStatusAsync(UserStatus.Online);
                 await client.SetGameAsync("LPDaVinci auf Twitch", "https://twitch.tv/lpdavinci", ActivityType.Streaming);
-
-                _client.Ready += () => audio.InitializeAsync();
-
-                 services.GetRequiredService<InactivityTrackingService>().BeginTracking();
-
-                // we get the CommandHandler class here and call the InitializeAsync method to start things up for the CommandHandler service
-                await services.GetRequiredService<CommandHandler>().InitializeAsync();
                 
+                //Command Handler Class
+                await services.GetRequiredService<CommandHandler>().InitializeAsync();
+
+                //Handler for Reactions and Buttons
                 services.GetRequiredService<ReactionHandler>();
+                services.GetRequiredService<ButtonHandler>();
 
-                 services.GetRequiredService<ButtonHandler>();
+                //LoggingService
+                services.GetRequiredService<LoggingService>();
 
-                await Task.Delay(-1);
+                //LiveAlertHandler
+                services.GetRequiredService<TwitchLiveAlertHandler>();
+
+                //UserJoinHandler
+                services.GetRequiredService<GuildJoinHandler>();
+
+                //VoiceStateHandler for Auto-VC
+                services.GetRequiredService<VoiceStateHandler>();
+                           
+                //Lavalink Inactivity Tracker
+                services.GetRequiredService<InactivityTrackingService>().BeginTracking();       
+
+                await Task.Delay(Timeout.Infinite);
             }
         }
+        private async Task ReadyAsync()
+        {
+            await _audioService.InitializeAsync();
+            await _icommands.RegisterCommandsToGuildAsync(205388858265698304);
+            _icommands.AddCommandsGloballyAsync
+        }
+
 
         // this method handles the ServiceCollection creation/configuration, and builds out the service provider we can call on later
         private ServiceProvider ConfigureServices()
@@ -117,6 +129,7 @@ namespace CentricXBot
                     MessageCacheSize = 1000,  
                     AlwaysDownloadUsers = true,
             }))
+                .AddSingleton(x => new InteractionService(x.GetRequiredService<DiscordSocketClient>()))
                 .AddSingleton<CommandService>()
                 .AddSingleton<CommandHandler>()
                 .AddSingleton<ReactionHandler>()
