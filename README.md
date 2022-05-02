@@ -25,4 +25,6 @@ Member Counter
 
 ## Installation:
 Rename config.json.default to config.json and add your Token in this file.  
+This InviteURL: needed to use InteractionFramework:  
+https://discord.com/api/oauth2/authorize?client_id=<ClientID>&permissions=8&scope=bot%20applications.commands
 Start the Bot and Enjoy many Features.  
