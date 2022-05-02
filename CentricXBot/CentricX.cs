@@ -95,7 +95,6 @@ namespace CentricXBot
         {
             await _audioService.InitializeAsync();
             await _icommands.RegisterCommandsToGuildAsync(205388858265698304);
-            _icommands.AddCommandsGloballyAsync
         }
 
 
