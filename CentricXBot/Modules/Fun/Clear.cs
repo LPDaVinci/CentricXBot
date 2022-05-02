@@ -11,6 +11,7 @@ namespace CentricXBot.Modules.Fun
         [Command("clear")]
        public async Task ClearAsync(uint amount, ulong bottomMessageId = 0)
 {
+
             var context = Context;
 			var guild = context.Guild;
             var channel = (Context.Channel as ITextChannel);
@@ -26,7 +27,6 @@ namespace CentricXBot.Modules.Fun
 			}
 
             List<ulong> msgToDel = new List<ulong>();
-
 			messageList.AddRange(
 				(await channel.GetMessagesAsync((int)amount + 1).FlattenAsync()).Where(m => {
 					if (m == null) {
@@ -49,11 +49,18 @@ namespace CentricXBot.Modules.Fun
                 "If you want to clear a whole channel just right-click the channel then select 'Clone Channel'")).Id); //Send a msg, then add the msg ID to the list.
             } else {
                 msgToDel.Add((await ReplyAsync($":white_check_mark: I have deleted `{count} {(count > 1 ? "messages" : "message")}`!")).Id); 
-            }            
-			await channel.DeleteMessagesAsync(messageList);             
-            await Task.Delay(1000);
-            await channel.DeleteMessagesAsync(msgToDel);
-            weekcheck = false;
+            }       
+             
+            weekcheck = false;   
+            Task.Run(async() => { 
+                await channel.DeleteMessagesAsync(messageList); 
+                await Task.Delay(5000);
+                await channel.DeleteMessagesAsync(msgToDel);        
+            
+            });
+
 }
+
     }
+
 }
