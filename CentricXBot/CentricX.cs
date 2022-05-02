@@ -97,6 +97,10 @@ namespace CentricXBot
 
             await _audioService.InitializeAsync();
             await _icommands.RegisterCommandsToGuildAsync(guildid);
+            
+            //Use this if you want to remove all Slash Commands
+            //List<ApplicationCommandProperties> applicationCommandProperties = new();
+            //await _client.BulkOverwriteGlobalApplicationCommandsAsync(applicationCommandProperties.ToArray());
         }
 
 
