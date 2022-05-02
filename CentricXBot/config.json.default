@@ -6,6 +6,8 @@
   "TwitchOAuth": "<TwitchOAuth Token>",
   "LiveAlertChannel": "<LiveAlertChannel>",
   "LiveAlertStreamer": "<LiveAlertStreamer>",
+  "YoutubeAPIKey": "<YoutubeAPIKey>",
+  "YoutubeChannelID": "<YoutubeChannelID>",
   "LavaLinkIP": "weez-node.cf",
   "LavaLinkPort": "2333",
   "LavaLinkPassword": "FreeLava",

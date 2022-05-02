@@ -79,6 +79,8 @@ namespace CentricXBot
                 //LiveAlertHandler
                 services.GetRequiredService<TwitchLiveAlertHandler>();
 
+                services.GetRequiredService<YoutubeUploadAlert>();
+
                 //UserJoinHandler
                 services.GetRequiredService<GuildJoinHandler>();
 
@@ -140,6 +142,7 @@ namespace CentricXBot
                 .AddSingleton<ReactionHandler>()
                 .AddSingleton<ButtonHandler>()
                 .AddSingleton<TwitchLiveAlertHandler>()
+                .AddSingleton<YoutubeUploadAlert>()
                 .AddSingleton<GuildJoinHandler>()
                 .AddSingleton<VoiceStateHandler>()
                 .AddSingleton(new InteractiveConfig { DefaultTimeout = TimeSpan.FromMinutes(5) }) // Optional config

@@ -11,6 +11,8 @@ namespace CentricxBot.Data
     [JsonProperty("TwitchOAuth")] public string TwitchOAuth { get; set; }
     [JsonProperty("LiveAlertChannel")] public string LiveAlertChannel { get; set; }
     [JsonProperty("LiveAlertStreamer")] public string LiveAlertStreamer { get; set; }
+    [JsonProperty("YoutubeAPIKey")] public string YoutubeAPIKey { get; set; }
+    [JsonProperty("YoutubeChannelID")] public string YoutubeChannelID { get; set; }
     [JsonProperty("LavaLinkIP")] public string LavaLinkIP { get; set; }
     [JsonProperty("LavaLinkPort")] public string LavaLinkPort { get; set; }
     [JsonProperty("LavaLinkPassword")] public string LavaLinkPassword { get; set; }
