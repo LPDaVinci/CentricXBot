@@ -50,7 +50,7 @@ namespace CentricXBot.Handler
                 {
                     if ((after.VoiceChannel != before.VoiceChannel)
                         && before.VoiceChannel.Category.Id.Equals(autocreatecategoryid) 
-                        && before.VoiceChannel.Users.Count == 0 
+                        && before.VoiceChannel.ConnectedUsers.Count == 0
                         && !before.VoiceChannel.Id.Equals(autocreateid))
                     {
                         await before.VoiceChannel.DeleteAsync();
@@ -58,7 +58,7 @@ namespace CentricXBot.Handler
                 }else{
                         if (!(before.VoiceChannel == null)
                             && before.VoiceChannel.Category.Id.Equals(autocreatecategoryid) 
-                            && before.VoiceChannel.Users.Count == 0 
+                            && before.VoiceChannel.ConnectedUsers.Count == 0
                             && !before.VoiceChannel.Id.Equals(autocreateid))
                         {
                             await before.VoiceChannel.DeleteAsync();
