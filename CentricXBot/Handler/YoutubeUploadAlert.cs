@@ -66,7 +66,7 @@ namespace CentricXBot.Handler
 
         public YoutubeUploadAlert(IServiceProvider services)
         {
-            System.Timers.Timer timer = new System.Timers.Timer(60000); 
+            System.Timers.Timer timer = new System.Timers.Timer(300000); 
            timer.Elapsed += async ( sender, e ) => await YoutubeAlert(); 
             timer.Start();
 
