@@ -60,7 +60,7 @@ namespace CentricXBot.Handler
                             && before.VoiceChannel.Category.Id.Equals(autocreatecategoryid) 
                             && before.VoiceChannel.ConnectedUsers.Count == 0
                             && !before.VoiceChannel.Id.Equals(autocreateid))
-                        {
+                        { 
                             await before.VoiceChannel.DeleteAsync();
                         } 
                     }            

@@ -126,6 +126,7 @@ namespace CentricXBot
                         GatewayIntents.GuildBans|
                         GatewayIntents.GuildVoiceStates|
                         GatewayIntents.GuildEmojis| 
+                        GatewayIntents.MessageContent|
                         //GatewayIntents.GuildInvites| 
                         GatewayIntents.GuildMessageReactions|
                         GatewayIntents.GuildMessageTyping|
