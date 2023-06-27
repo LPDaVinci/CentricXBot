@@ -95,8 +95,8 @@ namespace CentricXBot.Handler
                     //Send Embed to channel
                     ulong ChannelID = Convert.ToUInt64(livealertchannel);
                     var sendchannel = _client.GetChannel(ChannelID) as IMessageChannel; 
-                    var text = await sendchannel.SendMessageAsync($"@everyone\n:star: {stream.data[0].user_name} ist live!\n\n");
-                    var msg = await sendchannel.SendMessageAsync(embed: embed.Build()); 
+                   // var text = await sendchannel.SendMessageAsync($"@everyone\n:star: {stream.data[0].user_name} ist live!\n\n");
+                    var msg = await sendchannel.SendMessageAsync($"@everyone\n:star: {stream.data[0].user_name} ist live!\n\n",embed: embed.Build()); 
                     isLive = true;
                 }
         else {
